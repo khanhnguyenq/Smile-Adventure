@@ -1,35 +1,38 @@
-import { useEffect, useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
+import { useState } from 'react';
+import { NavBar, NavBarLanding } from './components/NavBar';
+import { SignInForm } from './components/SignInForm';
+import { SignUpForm } from './components/SignUpForm';
 
 export default function App() {
-  const [serverData, setServerData] = useState('');
-
-  useEffect(() => {
-    async function readServerData() {
-      const resp = await fetch('/api/hello');
-      const data = await resp.json();
-
-      console.log('Data from server:', data);
-
-      setServerData(data.message);
-    }
-
-    readServerData();
-  }, []);
+  const [view, setView] = useState('landing');
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>{serverData}</h1>
+      {view === 'landing' && (
+        <>
+          <NavBarLanding
+            signup="Sign-Up"
+            signin="Sign-In"
+            onClickOne={() => setView('sign-up')}
+            onClickTwo={() => setView('sign-in')}
+          />
+          <span>Smile and Soar: Thrill Awaits, No Lines in your Way! </span>
+          <span>Find Wait Times for your favorite rides!</span>
+        </>
+      )}
+      {view === 'sign-up' && (
+        <>
+          <NavBar content="Login" onClick={() => setView('sign-in')} />
+          <SignUpForm />
+        </>
+      )}
+      {view === 'sign-in' && (
+        <>
+          <NavBar content="Sign-up" onClick={() => setView('sign-up')} />
+          <SignInForm />
+        </>
+      )}
     </>
   );
 }
