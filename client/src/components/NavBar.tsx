@@ -7,8 +7,8 @@ type NavBarProps = {
 
 export function NavBar({ content, onClick }: NavBarProps) {
   return (
-    <div className="flex">
-      <div className="basis-1/2 flex flex-nowrap justify-end">
+    <div className="flex bg-primary">
+      <div className="basis-1/2 flex flex-nowrap">
         <Logo />
       </div>
       <div className="basis-1/2 flex flex-nowrap justify-end items-center">
@@ -32,8 +32,8 @@ export function NavBarLanding({
   onClickTwo,
 }: NavBarLandingProps) {
   return (
-    <div className="flex">
-      <div className="basis-1/2 flex flex-nowrap justify-end">
+    <div className="flex bg-primary">
+      <div className="basis-1/2 flex flex-nowrap">
         <Logo />
       </div>
       <div className="basis-1/2 flex flex-nowrap justify-end items-center">
