@@ -31,7 +31,7 @@ export default function App() {
     // <FetchParks />
     <>
       {view === 'landing' && (
-        <>
+        <div className="flex flex-col">
           <NavBarLanding
             signup="Sign-Up"
             signin="Sign-In"
@@ -39,9 +39,15 @@ export default function App() {
             onClickTwo={() => setView('sign-in')}
           />
           <LandingCarousel images={images} />
-          <p>Smile and Soar: Thrill Awaits, No Lines in your Way! </p>
-          <p>Find Wait Times for your favorite rides!</p>
-        </>
+          <div className="h-610 flex flex-col justify-around bg-secondary">
+            <p className="text-center">
+              Smile and Soar: Thrill Awaits, No Lines in your Way!
+            </p>
+            <p className="text-center">
+              Find Wait Times for your favorite rides!
+            </p>
+          </div>
+        </div>
       )}
       {view === 'sign-up' && (
         <>
