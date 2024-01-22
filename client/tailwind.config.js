@@ -9,5 +9,6 @@ export default {
       },
     },
   },
-  plugins: [],
+  // eslint-disable-next-line no-undef
+  plugins: [require('daisyui')], // require does not need to be define since it's part of a 'daisyui'
 };

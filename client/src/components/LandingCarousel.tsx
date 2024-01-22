@@ -34,14 +34,16 @@ type ImageCarouselProps = {
 function ImageCarousel({ images, currentImage }: ImageCarouselProps) {
   return (
     <div>
-      <div className="w-full h-60">
+      <div className="w-full h-60 md:h-96">
         <img
           className="w-full h-full"
           src={images[currentImage].src}
           alt={images[currentImage].alt}
         />
       </div>
-      <p className="text-center bg-secondary">{images[currentImage].caption}</p>
+      <p className="text-center bg-secondary text-black">
+        {images[currentImage].caption}
+      </p>
     </div>
   );
 }
