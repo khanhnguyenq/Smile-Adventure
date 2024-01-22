@@ -24,10 +24,10 @@ export function LandingPage() {
     <div>
       <LandingCarousel images={images} />
       <div className="h-610 flex flex-col justify-around bg-secondary">
-        <p className="text-center text-black">
+        <p className="text-center text-black font-2">
           Smile and Soar: Thrill Awaits, No Lines in your Way!
         </p>
-        <p className="text-center text-black">
+        <p className="text-center text-black font-2">
           Find Wait Times for your favorite rides!
         </p>
         <div className="text-center">

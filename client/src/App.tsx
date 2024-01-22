@@ -5,6 +5,7 @@ import { SignUpForm } from './pages/SignUpForm';
 import { Routes, Route } from 'react-router-dom';
 import { LandingPage } from './pages/LandingPage';
 import { LoggedIn } from './pages/LoggedIn';
+import { NotFound } from './pages/NotFound';
 // import { FetchParks } from './components/FetchParks';
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/sign-up" element={<SignUpForm />} />
         <Route path="/sign-in" element={<SignInForm />} />
         <Route path="/logged-in" element={<LoggedIn />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
     // <FetchParks />

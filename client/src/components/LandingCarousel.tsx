@@ -41,7 +41,7 @@ function ImageCarousel({ images, currentImage }: ImageCarouselProps) {
           alt={images[currentImage].alt}
         />
       </div>
-      <p className="text-center bg-secondary text-black">
+      <p className="text-center bg-secondary text-black font-1 text-2xl">
         {images[currentImage].caption}
       </p>
     </div>

@@ -28,13 +28,13 @@ export function SignInForm() {
 
   return (
     <div className="h-[850px] bg-secondary flex flex-col flex-wrap content-center">
-      <p className="text-black my-12 text-center">
+      <p className="text-black my-12 text-center font-2">
         Let's get your adventure started!
       </p>
-      <p className="text-black text-center">Sign-in below!</p>
+      <p className="text-black text-center font-1">Sign-in below!</p>
       <form onSubmit={handleSubmit}>
         <div className="flex justify-center py-5">
-          <label className="block text-black text-center">
+          <label className="block text-black text-center font-1">
             Username:
             <input
               type="text"
@@ -44,7 +44,7 @@ export function SignInForm() {
           </label>
         </div>
         <div className="flex justify-center py-5">
-          <label className="block text-black text-center">
+          <label className="block text-black text-center font-1">
             Password:
             <input
               type="password"

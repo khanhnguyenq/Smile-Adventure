@@ -18,7 +18,11 @@ export function SignUpForm() {
         throw new Error(`fetch Error ${res.status}`);
       }
       const user = await res.json();
-      console.log('Registered', user);
+      const displayName = user.name.replace(
+        `${user.name[0]}`,
+        `${user.name[0].toUpperCase()}`
+      );
+      alert(`Thank you for registering ${displayName}!`);
       navigate('/sign-in');
     } catch (err) {
       alert(`Error registering user: ${err}`);
@@ -27,13 +31,15 @@ export function SignUpForm() {
 
   return (
     <div className="h-[850px] bg-secondary flex flex-col flex-wrap content-center">
-      <p className="text-black my-12 text-center">
+      <p className="text-black my-12 text-center font-2">
         Let's get your adventure started!
       </p>
-      <p className="text-black text-center">Sign-up for an account below!</p>
+      <p className="text-black text-center font-1">
+        Sign-up for an account below!
+      </p>
       <form onSubmit={handleSubmit}>
         <div className="flex justify-center py-5">
-          <label className="block text-black text-center">
+          <label className="block text-black text-center font-1">
             Name:
             <input
               type="text"
@@ -43,7 +49,7 @@ export function SignUpForm() {
           </label>
         </div>
         <div className="flex justify-center py-5">
-          <label className="block text-black text-center">
+          <label className="block text-black text-center font-1">
             Username:
             <input
               type="text"
@@ -53,7 +59,7 @@ export function SignUpForm() {
           </label>
         </div>
         <div className="flex justify-center py-5">
-          <label className="block text-black text-center">
+          <label className="block text-black text-center font-1">
             Password:
             <input
               type="password"
