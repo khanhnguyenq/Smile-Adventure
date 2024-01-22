@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.h-610 {
-  height: 610px;
-}
-
 .font-1 {
   font-family: Courgette, cursive;
 }

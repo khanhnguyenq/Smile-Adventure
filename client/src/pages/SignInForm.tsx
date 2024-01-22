@@ -18,11 +18,11 @@ export function SignInForm() {
         throw new Error(`fetch Error ${res.status}`);
       }
       const { user, token } = await res.json();
+      if (!user || !token) throw new Error('invalid user');
       localStorage.setItem('user', JSON.stringify(user.username));
-      console.log('Logged in!', user, '; token:', token);
       navigate('/logged-in');
     } catch (err) {
-      alert(`Error registering user: ${err}`);
+      alert(`Error signing-in user: ${err}`);
     }
   }
 

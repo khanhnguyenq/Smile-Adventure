@@ -1,12 +1,6 @@
 import { createContext } from 'react';
+import { User } from '../lib/api';
 
-export type User = {
-  userId: number;
-  username: string;
-};
+export const AppContext = createContext<User | undefined>(undefined);
 
-export type AppContextValues = {
-  user: User | undefined;
-};
-
-export const AppContext = createContext({ user: undefined });
+export const UserProvider = AppContext.Provider;
