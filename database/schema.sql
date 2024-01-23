@@ -10,15 +10,15 @@ CREATE TABLE "users" (
   "userId" serial PRIMARY KEY,
   "username" text,
   "hashedPassword" text,
-  "fullName" text,
-  "createdAt" timestamptz
+  "name" text,
+  "createdAt"  timestamptz(6) not null default now()
 );
 
 CREATE TABLE "parks" (
   "parkId" text PRIMARY KEY,
   "parkName" text,
-  "longitude" integer,
-  "lattitude" integer
+  "longitude" float,
+  "latitude" float
 );
 
 CREATE TABLE "userAttractions" (
