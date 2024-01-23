@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { Logo } from './logo';
+import { Logo } from './Logo';
 
 export function NavBar() {
   const user = localStorage.getItem('user');

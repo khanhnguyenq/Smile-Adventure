@@ -1,6 +1,8 @@
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+export const tokenKey = 'user';
+
 export function SignInForm() {
   const navigate = useNavigate();
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -19,7 +21,7 @@ export function SignInForm() {
       }
       const { user, token } = await res.json();
       if (!user || !token) throw new Error('invalid user');
-      localStorage.setItem('user', JSON.stringify(user.username));
+      localStorage.setItem(tokenKey, JSON.stringify({ token, user }));
       navigate('/logged-in');
     } catch (err) {
       alert(`Error signing-in user: ${err}`);

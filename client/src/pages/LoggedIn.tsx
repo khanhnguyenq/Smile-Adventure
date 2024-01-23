@@ -1,14 +1,13 @@
-import { GetLocation } from '../components/GetLocation';
+import { GetUserLocation } from '../components/GetUserLocation';
+// import { ParksByDistance } from '../components/ParksByDistance';
+import { useUser } from '../components/userUser';
 
 export function LoggedIn() {
-  const user = localStorage.getItem('user');
-  if (!user) throw new Error('User does not exist.');
-  const parsedUser = JSON.parse(user);
-  // const displayName = parsedUser[0].replace(
-  //   `${parsedUser[0][1]}`,
-  //   `${parsedUser[0][1].toUpperCase()}`
-  // );
-  const displayName = `${parsedUser[0][1].toUpperCase()}`;
+  const user = useUser();
+  const displayName = user.username.replace(
+    `${user.username[0]}`,
+    `${user.username[0].toUpperCase()}`
+  );
 
   return (
     <div className="h-[850px] bg-secondary flex flex-col flex-wrap content-center">
@@ -29,10 +28,15 @@ export function LoggedIn() {
           />
         </label>
       </div>
+      <div className="flex justify-center py-5">
+        <GetUserLocation />
+      </div>
       <p className="text-black text-center font-1">
         Or Select One of these Parks:
       </p>
-      <GetLocation />
+      {/* <div>
+        <ParksByDistance />
+      </div> */}
     </div>
   );
 }
