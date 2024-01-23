@@ -17,8 +17,8 @@ CREATE TABLE "users" (
 CREATE TABLE "parks" (
   "parkId" text PRIMARY KEY,
   "parkName" text,
-  "longitude" integer,
-  "lattitude" integer
+  "longitude" float,
+  "latitude" float
 );
 
 CREATE TABLE "userAttractions" (

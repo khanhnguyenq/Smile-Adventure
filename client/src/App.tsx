@@ -6,7 +6,9 @@ import { Routes, Route } from 'react-router-dom';
 import { LandingPage } from './pages/LandingPage';
 import { LoggedIn } from './pages/LoggedIn';
 import { NotFound } from './pages/NotFound';
+// import { GetLocation } from './components/GetLocation';
 // import { FetchParks } from './components/FetchParks';
+// import { FetchLocation } from './components/FetchLocation';
 
 export default function App() {
   return (
@@ -21,7 +23,8 @@ export default function App() {
         </Route>
       </Routes>
     </>
-
+    // <GetLocation />
     // <FetchParks />
+    // <FetchLocation />
   );
 }

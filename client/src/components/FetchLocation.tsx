@@ -13,31 +13,42 @@ type Park = {
   name: string;
 };
 
-export function FetchParks() {
-  const [parks, setParks] = useState<Park[]>();
+type Location = {
+  longitude: number;
+  latitude: number;
+};
+
+export function FetchLocation() {
+  const [location, setLocation] = useState<Location[]>();
 
   useEffect(() => {
-    async function getParks() {
+    async function getLocation() {
       try {
         const res = await fetch('https://api.themeparks.wiki/v1/destinations');
         if (!res.ok) throw new Error('Unable to fetch parks');
         const result = (await res.json()) as APIResult;
-        setParks(extractParks(result));
+        const parkArray = extractParks(result);
+        const locationArray = [];
+        for (let i = 0; i < parkArray.length; i++) {
+          const response = await fetch(
+            `https://api.themeparks.wiki/v1/entity/${parkArray[i].id}`
+          );
+          const answer = await response.json();
+          locationArray.push(answer.location);
+        }
+        setLocation(locationArray);
       } catch (err) {
         console.log(err);
       }
     }
-    getParks();
+    getLocation();
   }, []);
+  if (!location) return <div>Loading....</div>;
 
-  if (!parks) return <div>Loading....</div>;
-
-  const resultList = parks.map((park) => (
-    <li key={park.id}>
-      {/* <div>Name: {park.name}</div>
-      <div>Park ID: {park.id}</div> */}
+  const resultList = location?.map((park) => (
+    <li key={park?.longitude}>
       <div>
-        '{park.id}','{park.name}'
+        '{park?.longitude}','{park?.latitude}'
       </div>
     </li>
   ));

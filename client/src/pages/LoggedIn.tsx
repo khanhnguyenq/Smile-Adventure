@@ -1,11 +1,14 @@
+import { GetLocation } from '../components/GetLocation';
+
 export function LoggedIn() {
   const user = localStorage.getItem('user');
   if (!user) throw new Error('User does not exist.');
   const parsedUser = JSON.parse(user);
-  const displayName = parsedUser.replace(
-    `${parsedUser[0]}`,
-    `${parsedUser[0].toUpperCase()}`
-  );
+  // const displayName = parsedUser[0].replace(
+  //   `${parsedUser[0][1]}`,
+  //   `${parsedUser[0][1].toUpperCase()}`
+  // );
+  const displayName = `${parsedUser[0][1].toUpperCase()}`;
 
   return (
     <div className="h-[850px] bg-secondary flex flex-col flex-wrap content-center">
@@ -29,6 +32,7 @@ export function LoggedIn() {
       <p className="text-black text-center font-1">
         Or Select One of these Parks:
       </p>
+      <GetLocation />
     </div>
   );
 }

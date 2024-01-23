@@ -96,6 +96,20 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
   }
 });
 
+app.get('/api/parks', async (req, res, next) => {
+  try {
+    const sql = `
+    SELECT "parkName", "longitude", "latitude"
+      FROM "parks"
+    `;
+    const result = await db.query(sql);
+    const parks = result.rows;
+    res.status(200).json(parks);
+  } catch (err) {
+    next(err);
+  }
+});
+
 /*
  * Middleware that handles paths that aren't handled by static middleware
  * or API route handlers.
