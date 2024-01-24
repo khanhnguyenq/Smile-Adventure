@@ -1,9 +1,10 @@
 import { GetUserLocation } from '../components/GetUserLocation';
 // import { ParksByDistance } from '../components/ParksByDistance';
-import { useUser } from '../components/userUser';
+import { useUser } from '../components/useUser';
 
 export function LoggedIn() {
-  const user = useUser();
+  const { user } = useUser();
+  if (!user) throw new Error('Not Logged In');
   const displayName = user.username.replace(
     `${user.username[0]}`,
     `${user.username[0].toUpperCase()}`
