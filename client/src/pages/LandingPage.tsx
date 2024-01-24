@@ -4,17 +4,17 @@ import { RollerCoaster } from '../components/RollerCoaster';
 
 const images = [
   {
-    src: 'src/images/1.jpg',
+    src: 'images/1.jpg',
     alt: 'checking',
     caption: 'Check Wait Times',
   },
   {
-    src: 'src/images/2.jpg',
+    src: 'images/2.jpg',
     alt: 'planning',
     caption: 'Plan Your Day!',
   },
   {
-    src: 'src/images/3.jpg',
+    src: 'images/3.jpg',
     alt: 'enjoying',
     caption: 'Enjoy the Thrill!',
   },
