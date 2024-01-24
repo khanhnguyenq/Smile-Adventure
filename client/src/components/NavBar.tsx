@@ -1,9 +1,13 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { Logo } from './Logo';
+import { useUser } from './useUser';
 
-export function NavBar() {
-  const user = localStorage.getItem('user');
-  const navigate = useNavigate();
+type NavBarProps = {
+  onSignOut: () => void;
+};
+
+export function NavBar({ onSignOut }: NavBarProps) {
+  const { user } = useUser();
   return (
     <div>
       <div className="navbar bg-primary">
@@ -48,16 +52,11 @@ export function NavBar() {
         <Logo />
         <div className="navbar-end">
           {user && (
-            <button
-              onClick={() => {
-                navigate('/');
-                localStorage.clear();
-              }}
-              className="btn btn-ghost text-black">
+            <button onClick={onSignOut} className="btn btn-ghost text-black">
               Sign-Out
             </button>
           )}
-          {!user && (
+          {user === undefined && (
             <>
               <Link to="/sign-in" className="btn btn-ghost text-black">
                 Sign-In
