@@ -59,7 +59,7 @@ export function SignInForm({ onSignIn }: SignInFormProps) {
           </label>
         </div>
         <div className="flex justify-center py-5">
-          <button className="btn btn-md text-white">Login</button>
+          <button className="btn btn-sm text-white">Login</button>
         </div>
       </form>
     </div>

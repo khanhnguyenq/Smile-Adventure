@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-// import { Location } from './GetUserLocation';
 
-type ParkDetail = {
+type ParkLocation = {
   parkName: string;
   longitude: number;
   latitude: number;
@@ -18,14 +17,14 @@ type ParksByDistanceProps = {
 };
 
 export function ParksByDistance({ lat, long }: ParksByDistanceProps) {
-  const [parkDetails, setParkDetails] = useState<ParkDetail[]>();
+  const [parkDetails, setParkDetails] = useState<ParkLocation[]>();
 
   useEffect(() => {
     async function getParkDetails() {
       try {
         const res = await fetch('/api/parks');
         if (!res.ok) throw new Error(`${res.status}: Unable to get parks`);
-        const result = (await res.json()) as ParkDetail[];
+        const result = (await res.json()) as ParkLocation[];
         setParkDetails(result);
       } catch (err) {
         console.log(err);
@@ -73,13 +72,13 @@ export function ParksByDistance({ lat, long }: ParksByDistanceProps) {
   );
 
   const sortedPark = park?.sort((a, b) => a.distance - b.distance);
-  const sortedParkNames = sortedPark?.map((i, index) => (
+  const namesOfSortedPark = sortedPark?.map((i, index) => (
     <li key={index}>{i.parkName}</li>
   ));
 
   return (
     <div className="flex justify-center py-5">
-      <ul className="text-black text-center font-1">{sortedParkNames}</ul>
+      <ul className="text-black text-center font-1">{namesOfSortedPark}</ul>
     </div>
   );
 }

@@ -69,7 +69,7 @@ export function SignUpForm() {
           </label>
         </div>
         <div className="flex justify-center py-5">
-          <button className="btn btn-md text-white">Register</button>
+          <button className="btn btn-sm text-white">Register</button>
         </div>
       </form>
     </div>
