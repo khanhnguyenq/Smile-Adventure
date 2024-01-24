@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { RollerCoaster } from './RollerCoaster';
 
-type Location = {
+export type Location = {
   lat: number;
   long: number;
 };
 
-export function GetUserLocation() {
+type GetUserLocationProps = {
+  onObtainedLocation: (location: Location) => void;
+};
+
+export function GetUserLocation({ onObtainedLocation }: GetUserLocationProps) {
   const [location, setLocation] = useState<Location | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,8 +23,7 @@ export function GetUserLocation() {
   function success(position) {
     const lat = position.coords.latitude;
     const long = position.coords.longitude;
-    const newData = [lat, long];
-    localStorage.setItem('location', JSON.stringify(newData));
+    onObtainedLocation({ lat, long });
     setLocation({ lat, long });
     setIsLoading(false);
   }

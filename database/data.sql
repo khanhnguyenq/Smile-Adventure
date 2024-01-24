@@ -27,7 +27,7 @@ insert into "parks"
     ('eb3f4560-2383-4a36-9152-6b3e5ed6bc57','Universal Studios Florida','-81','28'),
     ('fe78a026-b91b-470c-b906-9d2266b692da','Universal''s Volcano Bay','-81.473351','28.461799'),
     ('0f044655-cd94-4bb8-a8e3-c789f4eca787','Hersheypark','-76.659119368427','40.287790858724'),
-    ('bc4005c5-8c7e-41d7-b349-cdddf1796427','Universal Studios','-81','28'),
+    ('bc4005c5-8c7e-41d7-b349-cdddf1796427','Universal Studios Hollywood','-118.352736','34.137665'),
     ('4535960b-45fb-49fb-a38a-59cf602a0a9c','Six Flags Over Texas','-97.0658','32.7565'),
     ('66e12a41-3a09-40cd-8f55-8d335d9d7d93','Heide Park','9.872393','53.022268'),
     ('000c724a-cd0f-41a1-b355-f764902c2b55','The Great Escape','-73.6911','43.3511'),

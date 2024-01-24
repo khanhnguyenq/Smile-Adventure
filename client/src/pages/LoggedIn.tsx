@@ -1,14 +1,20 @@
-import { GetUserLocation } from '../components/GetUserLocation';
-// import { ParksByDistance } from '../components/ParksByDistance';
+import { useState } from 'react';
+import { GetUserLocation, Location } from '../components/GetUserLocation';
+import { ParksByDistance } from '../components/ParksByDistance';
 import { useUser } from '../components/useUser';
 
 export function LoggedIn() {
   const { user } = useUser();
+  const [location, setLocation] = useState<Location>();
   if (!user) throw new Error('Not Logged In');
   const displayName = user.username.replace(
     `${user.username[0]}`,
     `${user.username[0].toUpperCase()}`
   );
+
+  function handleObtainedLocation(location: Location) {
+    setLocation(location);
+  }
 
   return (
     <div className="h-[850px] bg-secondary flex flex-col flex-wrap content-center">
@@ -30,14 +36,14 @@ export function LoggedIn() {
         </label>
       </div>
       <div className="flex justify-center py-5">
-        <GetUserLocation />
+        <GetUserLocation onObtainedLocation={handleObtainedLocation} />
       </div>
       <p className="text-black text-center font-1">
         Or Select One of these Parks:
       </p>
-      {/* <div>
-        <ParksByDistance />
-      </div> */}
+      <div>
+        <ParksByDistance lat={location?.lat} long={location?.long} />
+      </div>
     </div>
   );
 }

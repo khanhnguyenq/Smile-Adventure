@@ -9,8 +9,6 @@ import { NotFound } from './pages/NotFound';
 import { useEffect, useState } from 'react';
 import { Auth, User } from './lib/api';
 import { UserProvider } from './components/AppContext';
-// import { ParksByDistance } from './components/ParksByDistance';
-// import { GetLocation } from './components/GetLocation';
 // import { FetchParks } from './components/FetchParks';
 // import { FetchLocation } from './components/FetchLocation';
 
@@ -65,9 +63,7 @@ export default function App() {
       </Routes>
     </UserProvider>
 
-    // <GetLocation />
     // <FetchParks />
     // <FetchLocation />
-    // <ParksByDistance />
   );
 }
