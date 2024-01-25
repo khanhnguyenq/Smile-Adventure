@@ -9,8 +9,8 @@ import { NotFound } from './pages/NotFound';
 import { useEffect, useState } from 'react';
 import { Auth, User } from './lib/api';
 import { UserProvider } from './components/AppContext';
-// import { ParksByDistance } from './components/ParksByDistance';
-// import { GetLocation } from './components/GetLocation';
+import { SearchResults } from './pages/SearchResults';
+import { ClickedPark } from './pages/ClickedPark';
 // import { FetchParks } from './components/FetchParks';
 // import { FetchLocation } from './components/FetchLocation';
 
@@ -20,7 +20,10 @@ export default function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
+  const [searchedPark, setSearchedPark] = useState<string>();
   const [isAuthorizing, setIsAuthorizing] = useState(true);
+  const [clickedParkId, setClickedParkId] = useState<string>('');
+  const [clickedParkName, setClickedParkName] = useState<string>('');
 
   useEffect(() => {
     const auth = localStorage.getItem(tokenKey);
@@ -45,9 +48,19 @@ export default function App() {
     navigate('/');
   }
 
+  function handleSearch(searchPark: string) {
+    setSearchedPark(searchPark);
+  }
+
+  function handleParkClick(parkId: string, parkName: string) {
+    setClickedParkId(parkId);
+    setClickedParkName(parkName);
+    navigate('/park');
+  }
+
   if (isAuthorizing) return null;
 
-  const contextValue = { user, token };
+  const contextValue = { user, token, searchedPark };
 
   return (
     <UserProvider value={contextValue}>
@@ -59,15 +72,33 @@ export default function App() {
             path="/sign-in"
             element={<SignInForm onSignIn={handleSignIn} />}
           />
-          <Route path="/logged-in" element={<LoggedIn />} />
+          <Route
+            path="/logged-in"
+            element={
+              <LoggedIn
+                onParkClick={handleParkClick}
+                onSearch={(i) => {
+                  handleSearch(i);
+                }}
+              />
+            }
+          />
+          <Route
+            path="/search"
+            element={<SearchResults onParkClick={handleParkClick} />}
+          />
+          <Route
+            path="/park"
+            element={
+              <ClickedPark parkId={clickedParkId} parkName={clickedParkName} />
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </UserProvider>
 
-    // <GetLocation />
     // <FetchParks />
     // <FetchLocation />
-    // <ParksByDistance />
   );
 }

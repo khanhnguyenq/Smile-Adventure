@@ -9,7 +9,7 @@ type NavBarProps = {
 export function NavBar({ onSignOut }: NavBarProps) {
   const { user } = useUser();
   return (
-    <div>
+    <div className="container mx-auto">
       <div className="navbar bg-primary">
         <div className="navbar-start">
           <div className="drawer">

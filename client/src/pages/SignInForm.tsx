@@ -32,14 +32,16 @@ export function SignInForm({ onSignIn }: SignInFormProps) {
   }
 
   return (
-    <div className="h-[850px] bg-secondary flex flex-col flex-wrap content-center">
-      <p className="text-black my-12 text-center font-2">
+    <div className="h-screen bg-secondary flex flex-col flex-wrap content-center">
+      <p className="text-center text-black font-2 items-center flex justify-center py-12 text-2xl">
         Let's get your adventure started!
       </p>
-      <p className="text-black text-center font-1">Sign-in below!</p>
+      <p className="text-center text-black font-1 items-center flex justify-center py-12 text-2xl">
+        Sign-in below!
+      </p>
       <form onSubmit={handleSubmit}>
         <div className="flex justify-center py-5">
-          <label className="block text-black text-center font-1">
+          <label className="block text-black text-center font-1 text-lg">
             Username:
             <input
               type="text"
@@ -49,7 +51,7 @@ export function SignInForm({ onSignIn }: SignInFormProps) {
           </label>
         </div>
         <div className="flex justify-center py-5">
-          <label className="block text-black text-center font-1">
+          <label className="block text-black text-center font-1 text-lg">
             Password:
             <input
               type="password"
@@ -59,7 +61,7 @@ export function SignInForm({ onSignIn }: SignInFormProps) {
           </label>
         </div>
         <div className="flex justify-center py-5">
-          <button className="btn btn-md text-white">Login</button>
+          <button className="btn btn-sm text-white">Login</button>
         </div>
       </form>
     </div>

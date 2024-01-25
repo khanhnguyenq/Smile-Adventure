@@ -99,7 +99,7 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
 app.get('/api/parks', async (req, res, next) => {
   try {
     const sql = `
-    SELECT "parkName", "longitude", "latitude"
+    SELECT "parkName", "longitude", "latitude", "parkId"
       FROM "parks"
     `;
     const result = await db.query(sql);
