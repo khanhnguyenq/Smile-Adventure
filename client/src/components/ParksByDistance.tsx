@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { fetchParks } from '../data';
 
-type ParkLocation = {
+export type ParkLocation = {
   parkName: string;
+  parkId: string;
   longitude: number;
   latitude: number;
 };
@@ -22,9 +24,7 @@ export function ParksByDistance({ lat, long }: ParksByDistanceProps) {
   useEffect(() => {
     async function getParkDetails() {
       try {
-        const res = await fetch('/api/parks');
-        if (!res.ok) throw new Error(`${res.status}: Unable to get parks`);
-        const result = (await res.json()) as ParkLocation[];
+        const result = await fetchParks();
         setParkDetails(result);
       } catch (err) {
         console.log(err);

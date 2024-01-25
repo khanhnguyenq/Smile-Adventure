@@ -1,21 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useUser } from '../components/useUser';
-
-type ParkId = {
-  parkName: string;
-  parkId: string;
-};
+import { ParkLocation } from '../components/ParksByDistance';
+import { fetchParks } from '../data';
 
 export function SearchResults() {
   const { searchedPark } = useUser();
-  const [parkList, setParkList] = useState<ParkId[]>();
+  const [parkList, setParkList] = useState<ParkLocation[]>();
 
   useEffect(() => {
     async function getParkDetails() {
       try {
-        const res = await fetch('/api/parks');
-        if (!res.ok) throw new Error(`${res.status}: Unable to get parks`);
-        const result = (await res.json()) as ParkId[];
+        const result = await fetchParks();
         setParkList(result);
       } catch (err) {
         console.log(err);
@@ -24,30 +19,26 @@ export function SearchResults() {
     getParkDetails();
   }, []);
 
-  if (!searchedPark)
-    return (
-      <div>
-        <p>Oops! Adventures Await, but the Theme Park Couldn't Be Found.</p>
-        <p>Please double-check the name and try again.</p>
-      </div>
-    );
-
   const filteredParks = parkList?.filter((item) =>
     item.parkName
       .toLocaleLowerCase()
-      .includes(searchedPark?.toLocaleLowerCase())
+      .includes('' + searchedPark?.toLocaleLowerCase())
   );
 
   const list = filteredParks?.map((i, index) => (
     <li key={index}>{i.parkName}</li>
   ));
-  if (!list)
-    return (
-      <div>
-        <p>Oops! Adventures Await, but the Theme Park Couldn't Be Found.</p>
-        <p>Please double-check the name and try again.</p>
-      </div>
-    );
 
-  return <ul>{list}</ul>;
+  return (
+    <ul>
+      {list?.length === 0 ? (
+        <div>
+          <p>Oops! Adventures Await, but the Theme Park Couldn't Be Found.</p>
+          <p>Please double-check the name and try again.</p>
+        </div>
+      ) : (
+        list
+      )}
+    </ul>
+  );
 }
