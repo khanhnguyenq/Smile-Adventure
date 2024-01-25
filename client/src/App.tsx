@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { Auth, User } from './lib/api';
 import { UserProvider } from './components/AppContext';
 import { SearchResults } from './pages/SearchResults';
+import { ClickedPark } from './pages/ClickedPark';
 // import { FetchParks } from './components/FetchParks';
 // import { FetchLocation } from './components/FetchLocation';
 
@@ -21,6 +22,8 @@ export default function App() {
   const [token, setToken] = useState<string>();
   const [searchedPark, setSearchedPark] = useState<string>();
   const [isAuthorizing, setIsAuthorizing] = useState(true);
+  const [clickedParkId, setClickedParkId] = useState<string>('');
+  const [clickedParkName, setClickedParkName] = useState<string>('');
 
   useEffect(() => {
     const auth = localStorage.getItem(tokenKey);
@@ -49,6 +52,12 @@ export default function App() {
     setSearchedPark(searchPark);
   }
 
+  function handleParkClick(parkId: string, parkName: string) {
+    setClickedParkId(parkId);
+    setClickedParkName(parkName);
+    navigate('/park');
+  }
+
   if (isAuthorizing) return null;
 
   const contextValue = { user, token, searchedPark };
@@ -67,13 +76,23 @@ export default function App() {
             path="/logged-in"
             element={
               <LoggedIn
+                onParkClick={handleParkClick}
                 onSearch={(i) => {
                   handleSearch(i);
                 }}
               />
             }
           />
-          <Route path="/search" element={<SearchResults />} />
+          <Route
+            path="/search"
+            element={<SearchResults onParkClick={handleParkClick} />}
+          />
+          <Route
+            path="/park"
+            element={
+              <ClickedPark parkId={clickedParkId} parkName={clickedParkName} />
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

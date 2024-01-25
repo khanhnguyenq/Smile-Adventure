@@ -48,7 +48,7 @@ export function GetUserLocation({ onObtainedLocation }: GetUserLocationProps) {
           </div>
         )}
       </div>
-      <div className="flex justify-center py-5">
+      <div className="flex justify-center py-3">
         <button
           type="button"
           className="btn btn-sm text-white"

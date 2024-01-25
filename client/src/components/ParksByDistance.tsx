@@ -11,14 +11,20 @@ export type ParkLocation = {
 type ParkComparison = {
   distance: number;
   parkName: string;
+  parkId: string;
 };
 
 type ParksByDistanceProps = {
   lat: number | undefined;
   long: number | undefined;
+  onParkClick: (parkId: string, parkName: string) => void;
 };
 
-export function ParksByDistance({ lat, long }: ParksByDistanceProps) {
+export function ParksByDistance({
+  lat,
+  long,
+  onParkClick,
+}: ParksByDistanceProps) {
   const [parkDetails, setParkDetails] = useState<ParkLocation[]>();
 
   useEffect(() => {
@@ -33,10 +39,11 @@ export function ParksByDistance({ lat, long }: ParksByDistanceProps) {
     getParkDetails();
   }, []);
 
-  function getDistanceFromLatLonInMi(lat1, lon1, lat2, lon2, parkName) {
+  function getDistanceFromLatLonInMi(lat1, lon1, lat2, lon2, parkName, parkId) {
     const result: ParkComparison = {
       distance: 0,
       parkName: '',
+      parkId: '',
     };
     const R = 3958.75; // Radius of the earth in mi
     const dLat = deg2rad(lat2 - lat1); // deg2rad below
@@ -51,6 +58,7 @@ export function ParksByDistance({ lat, long }: ParksByDistanceProps) {
     const d = R * c; // Distance in mi
     result.distance = d;
     result.parkName = parkName;
+    result.parkId = parkId;
     return result;
   }
 
@@ -67,18 +75,24 @@ export function ParksByDistance({ lat, long }: ParksByDistanceProps) {
       userLong,
       i.latitude,
       i.longitude,
-      i.parkName
+      i.parkName,
+      i.parkId
     )
   );
 
   const sortedPark = park?.sort((a, b) => a.distance - b.distance);
-  const namesOfSortedPark = sortedPark?.map((i, index) => (
-    <li key={index}>{i.parkName}</li>
+  const namesOfSortedPark = sortedPark?.slice(0, 6).map((i, index) => (
+    <button
+      onClick={() => onParkClick(i.parkId, i.parkName)}
+      className="btn btn-ghost btn-md text-base"
+      key={index}>
+      {i.parkName}
+    </button>
   ));
 
   return (
-    <div className="flex justify-center py-5">
-      <ul className="text-black text-center font-1">{namesOfSortedPark}</ul>
+    <div className="flex justify-center flex-col py-5 font-1 text-black">
+      {namesOfSortedPark}
     </div>
   );
 }

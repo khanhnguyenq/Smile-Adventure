@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 
 type LoggedInProps = {
   onSearch: (searchPark) => void;
+  onParkClick: (parkId: string, parkName: string) => void;
 };
 
-export function LoggedIn({ onSearch }: LoggedInProps) {
+export function LoggedIn({ onSearch, onParkClick }: LoggedInProps) {
   const navigate = useNavigate();
   const { user } = useUser();
   const [location, setLocation] = useState<Location>();
@@ -32,23 +33,28 @@ export function LoggedIn({ onSearch }: LoggedInProps) {
     navigate('/search');
   }
 
+  function handleParkClick(parkId: string, parkName: string) {
+    onParkClick(parkId, parkName);
+    navigate('/park');
+  }
+
   return (
-    <div className="h-[850px] bg-secondary flex flex-col flex-wrap content-center">
-      <p className="text-black text-center font-2">
+    <div className="h-screen bg-secondary flex flex-col content-center">
+      <p className="text-black font-2 text-2xl py-5 text-center underline">
         Welcome back, {displayName}!
       </p>
-      <p className="text-black text-center font-1">
+      <p className="text-black text-center font-1 text-xl">
         Where are we heading today?
       </p>
-      <div className="flex justify-center py-5">
+      <div className="flex justify-center pt-2">
         <form onSubmit={handleSearch}>
-          <label className="block text-black text-center font-1">
+          <label className="block text-black text-center font-1 text-xl">
             Search for a park below:
             <input
               type="text"
               placeholder="Type a Park Here"
               name="search-input"
-              className="input input-bordered w-48 h-8 max-w-xs bg-gray-200 block"
+              className="input input-bordered w-48 h-8 max-w-xs bg-gray-200 block m-4"
             />
             <button type="submit" className="btn btn-xs text-white">
               Search
@@ -59,12 +65,16 @@ export function LoggedIn({ onSearch }: LoggedInProps) {
       <div className="flex justify-center py-5">
         <GetUserLocation onObtainedLocation={handleObtainedLocation} />
       </div>
-      <p className="text-black text-center font-1">
+      <p className="text-black text-center font-1 text-xl">
         Or find a park based on your location!
       </p>
       <div>
         {location && (
-          <ParksByDistance lat={location?.lat} long={location?.long} />
+          <ParksByDistance
+            lat={location?.lat}
+            long={location?.long}
+            onParkClick={handleParkClick}
+          />
         )}
       </div>
     </div>
