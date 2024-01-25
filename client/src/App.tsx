@@ -20,7 +20,6 @@ export default function App() {
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
   const [searchedPark, setSearchedPark] = useState<string>();
-  const [value, setValue] = useState('');
   const [isAuthorizing, setIsAuthorizing] = useState(true);
 
   useEffect(() => {
@@ -47,7 +46,6 @@ export default function App() {
   }
 
   function handleSearch(searchPark: string) {
-    setValue(searchPark);
     setSearchedPark(searchPark);
   }
 
@@ -69,7 +67,6 @@ export default function App() {
             path="/logged-in"
             element={
               <LoggedIn
-                value={value}
                 onSearch={(i) => {
                   handleSearch(i);
                 }}

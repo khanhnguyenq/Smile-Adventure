@@ -1,15 +1,14 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { GetUserLocation, Location } from '../components/GetUserLocation';
 import { ParksByDistance } from '../components/ParksByDistance';
 import { useUser } from '../components/useUser';
 import { useNavigate } from 'react-router-dom';
 
 type LoggedInProps = {
-  value: string;
-  onSearch: (searchPark: string) => void;
+  onSearch: (searchPark) => void;
 };
 
-export function LoggedIn({ onSearch, value }: LoggedInProps) {
+export function LoggedIn({ onSearch }: LoggedInProps) {
   const navigate = useNavigate();
   const { user } = useUser();
   const [location, setLocation] = useState<Location>();
@@ -24,6 +23,15 @@ export function LoggedIn({ onSearch, value }: LoggedInProps) {
     setLocation(location);
   }
 
+  function handleSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const searchInput = formData.get('search-input');
+    onSearch(searchInput);
+    navigate('/search');
+  }
+
   return (
     <div className="h-[850px] bg-secondary flex flex-col flex-wrap content-center">
       <p className="text-black text-center font-2">
@@ -33,15 +41,13 @@ export function LoggedIn({ onSearch, value }: LoggedInProps) {
         Where are we heading today?
       </p>
       <div className="flex justify-center py-5">
-        <form onSubmit={() => navigate('/search')}>
+        <form onSubmit={handleSearch}>
           <label className="block text-black text-center font-1">
             Search for a park below:
             <input
-              value={value}
-              onChange={(e) => onSearch(e.target.value)}
               type="text"
               placeholder="Type a Park Here"
-              name="username"
+              name="search-input"
               className="input input-bordered w-48 h-8 max-w-xs bg-gray-200 block"
             />
             <button type="submit" className="btn btn-xs text-white">
