@@ -33,6 +33,12 @@ export default function App() {
       setToken(a.token);
     }
     setIsAuthorizing(false);
+    const parkInfo = localStorage.getItem('parkInfo');
+    if (parkInfo) {
+      const items = JSON.parse(parkInfo);
+      setClickedParkId(items.parkId);
+      setClickedParkName(items.parkName);
+    }
   }, []);
 
   function handleSignIn(auth: Auth) {
@@ -53,6 +59,8 @@ export default function App() {
   }
 
   function handleParkClick(parkId: string, parkName: string) {
+    const parkInfo = [parkId, parkName];
+    localStorage.setItem('parkInfo', JSON.stringify(parkInfo));
     setClickedParkId(parkId);
     setClickedParkName(parkName);
     navigate('/park');
@@ -60,7 +68,13 @@ export default function App() {
 
   if (isAuthorizing) return null;
 
-  const contextValue = { user, token, searchedPark };
+  const contextValue = {
+    user,
+    token,
+    searchedPark,
+    clickedParkId,
+    clickedParkName,
+  };
 
   return (
     <UserProvider value={contextValue}>
@@ -87,12 +101,7 @@ export default function App() {
             path="/search"
             element={<SearchResults onParkClick={handleParkClick} />}
           />
-          <Route
-            path="/park"
-            element={
-              <ClickedPark parkId={clickedParkId} parkName={clickedParkName} />
-            }
-          />
+          <Route path="/park" element={<ClickedPark />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
