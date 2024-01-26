@@ -6,6 +6,7 @@ export function FetchRides() {
   const { clickedParkId } = useUser();
   const [rideInfo, setRideInfo] = useState<RideInfo[]>([]);
   const [error, setError] = useState<unknown>();
+  // const [view, setView] = useState('longest');
 
   useEffect(() => {
     async function getRidesInfo() {
@@ -43,12 +44,40 @@ export function FetchRides() {
     }
   }
 
-  console.log('openRides:', openRides);
+  // const sortShortest = openRides.sort(
+  //   (a, b) => a.queue.STANDBY.waitTime - b.queue.STANDBY.waitTime
+  // );
 
-  const openRidesList = openRides.map((i, index) => (
-    <div className="p-4" key={index}>
-      <p>{i.name}</p>
-      <p>Status: {i.status.toLocaleLowerCase()}</p>
+  const sortLongest = openRides.sort(
+    (a, b) => b.queue.STANDBY.waitTime - a.queue.STANDBY.waitTime
+  );
+
+  // const ridesListShortest = sortShortest.map((i, index) => (
+  //   <div
+  //     className="p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-1/2"
+  //     key={index}>
+  //     <div className="flex justify-between">
+  //       <p>{i.name}</p>
+  //       <p>F</p>
+  //     </div>
+  //     <p>Status: Operating</p>
+  //     <p>
+  //       {`Wait time: ${
+  //         i.queue.STANDBY.waitTime === null ? '0' : i.queue.STANDBY.waitTime
+  //       } Minutes`}
+  //     </p>
+  //   </div>
+  // ));
+
+  const ridesListLongest = sortLongest.map((i, index) => (
+    <div
+      className="p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-1/2"
+      key={index}>
+      <div className="flex justify-between">
+        <p>{i.name}</p>
+        <p>F</p>
+      </div>
+      <p>Status: Operating</p>
       <p>
         {`Wait time: ${
           i.queue.STANDBY.waitTime === null ? '0' : i.queue.STANDBY.waitTime
@@ -57,5 +86,9 @@ export function FetchRides() {
     </div>
   ));
 
-  return <div className="pt-9">{openRidesList}</div>;
+  return (
+    <div className="flex flex-col content-center flex-wrap">
+      {ridesListLongest}
+    </div>
+  );
 }

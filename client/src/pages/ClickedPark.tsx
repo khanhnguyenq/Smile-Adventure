@@ -38,12 +38,14 @@ export function ClickedPark() {
     );
 
   return (
-    <div>
-      <p>{clickedParkName}</p>
-      <p>Today's Date: {parkHours?.date}</p>
-      <p>
-        Operating Hours: {openingTime} - {closingTime}
-      </p>
+    <div className="bg-secondary">
+      <div className="text-center text-black items-center flex flex-col justify-center py-6 text-xl">
+        <p className="font-2 py-2">{clickedParkName}</p>
+        <p className="font-1 py-1">Today's Date: {parkHours?.date}</p>
+        <p className="font-1 py-1">
+          Operating Hours: {openingTime} - {closingTime}
+        </p>
+      </div>
       <FetchRides />
     </div>
   );

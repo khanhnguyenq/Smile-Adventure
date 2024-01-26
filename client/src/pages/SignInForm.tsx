@@ -32,7 +32,7 @@ export function SignInForm({ onSignIn }: SignInFormProps) {
   }
 
   return (
-    <div className="h-screen bg-secondary flex flex-col flex-wrap content-center">
+    <div className="bg-secondary flex flex-col content-center">
       <p className="text-center text-black font-2 items-center flex justify-center py-12 text-2xl">
         Let's get your adventure started!
       </p>
