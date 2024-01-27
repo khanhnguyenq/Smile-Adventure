@@ -61,7 +61,13 @@ export async function fetchAllRides(
 }
 
 export async function fetchAllFavoriteRides(): Promise<FavoriteRideInfo[]> {
-  const res = await fetch('/api/heart');
+  const req = {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    },
+  };
+  const res = await fetch('/api/favorite', req);
   if (!res.ok) throw new Error(`${res.status}: Unable to fetch favorite rides`);
   const resJSON = (await res.json()) as FavoriteRideInfo[];
   return resJSON;

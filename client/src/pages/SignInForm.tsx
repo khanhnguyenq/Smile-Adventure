@@ -23,6 +23,7 @@ export function SignInForm({ onSignIn }: SignInFormProps) {
         throw new Error(`fetch Error ${res.status}`);
       }
       const { user, token } = await res.json();
+      sessionStorage.setItem('token', token);
       if (!user || !token) throw new Error('invalid user');
       onSignIn({ user, token });
       navigate('/logged-in');

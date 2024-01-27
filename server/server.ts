@@ -4,6 +4,7 @@ import express from 'express';
 import pg from 'pg';
 import {
   ClientError,
+  authMiddleware,
   defaultMiddleware,
   errorMiddleware,
 } from './lib/index.js';
@@ -139,12 +140,13 @@ app.post('/api/heart', async (req, res, next) => {
   }
 });
 
-app.get('/api/heart', async (req, res, next) => {
+app.get('/api/favorite', authMiddleware, async (req, res, next) => {
   try {
     const sql = `
     SELECT * from "userAttractions"
+    WHERE "userId" = $1
     `;
-    const result = await db.query(sql);
+    const result = await db.query(sql, [req.user?.userId]);
     const favoriteRides = result.rows;
     res.status(201).json(favoriteRides);
   } catch (err) {
