@@ -11,8 +11,7 @@ import { Auth, User } from './lib/api';
 import { UserProvider } from './components/AppContext';
 import { SearchResults } from './pages/SearchResults';
 import { ClickedPark } from './pages/ClickedPark';
-// import { FetchParks } from './components/FetchParks';
-// import { FetchLocation } from './components/FetchLocation';
+import { FavoriteRides } from './pages/FavoriteRides';
 
 export const tokenKey = 'user';
 
@@ -20,10 +19,9 @@ export default function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
-  const [searchedPark, setSearchedPark] = useState<string>();
   const [isAuthorizing, setIsAuthorizing] = useState(true);
-  const [clickedParkId, setClickedParkId] = useState<string>('');
-  const [clickedParkName, setClickedParkName] = useState<string>('');
+  // const [clickedParkId, setClickedParkId] = useState<string>('');
+  // const [clickedParkName, setClickedParkName] = useState<string>('');
 
   useEffect(() => {
     const auth = localStorage.getItem(tokenKey);
@@ -33,12 +31,6 @@ export default function App() {
       setToken(a.token);
     }
     setIsAuthorizing(false);
-    const parkInfo = localStorage.getItem('parkInfo');
-    if (parkInfo) {
-      const items = JSON.parse(parkInfo);
-      setClickedParkId(items.parkId);
-      setClickedParkName(items.parkName);
-    }
   }, []);
 
   function handleSignIn(auth: Auth) {
@@ -54,26 +46,11 @@ export default function App() {
     navigate('/');
   }
 
-  function handleSearch(searchPark: string) {
-    setSearchedPark(searchPark);
-  }
-
-  function handleParkClick(parkId: string, parkName: string) {
-    const parkInfo = [parkId, parkName];
-    localStorage.setItem('parkInfo', JSON.stringify(parkInfo));
-    setClickedParkId(parkId);
-    setClickedParkName(parkName);
-    navigate('/park');
-  }
-
   if (isAuthorizing) return null;
 
   const contextValue = {
     user,
     token,
-    searchedPark,
-    clickedParkId,
-    clickedParkName,
   };
 
   return (
@@ -86,28 +63,13 @@ export default function App() {
             path="/sign-in"
             element={<SignInForm onSignIn={handleSignIn} />}
           />
-          <Route
-            path="/logged-in"
-            element={
-              <LoggedIn
-                onParkClick={handleParkClick}
-                onSearch={(i) => {
-                  handleSearch(i);
-                }}
-              />
-            }
-          />
-          <Route
-            path="/search"
-            element={<SearchResults onParkClick={handleParkClick} />}
-          />
+          <Route path="/favorite" element={<FavoriteRides />} />
+          <Route path="/logged-in" element={<LoggedIn />} />
+          <Route path="/search" element={<SearchResults />} />
           <Route path="/park" element={<ClickedPark />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </UserProvider>
-
-    // <FetchParks />
-    // <FetchLocation />
   );
 }

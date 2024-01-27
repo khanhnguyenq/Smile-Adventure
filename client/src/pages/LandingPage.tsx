@@ -1,6 +1,7 @@
 import { LandingCarousel } from '../components/LandingCarousel';
 import { Link } from 'react-router-dom';
 import { RollerCoaster } from '../components/RollerCoaster';
+import { useUser } from '../components/useUser';
 
 const images = [
   {
@@ -21,6 +22,7 @@ const images = [
 ];
 
 export function LandingPage() {
+  const { user } = useUser();
   return (
     <div className="container min-h-screen">
       <LandingCarousel images={images} />
@@ -31,7 +33,24 @@ export function LandingPage() {
         <p className="text-center text-black font-2 items-center flex justify-center py-12 bg-primary text-xl">
           Find Wait Times for your favorite rides!
         </p>
-        <div className="text-center items-center flex justify-center py-12">
+        {user ? (
+          <div className="text-center items-center flex justify-center py-12">
+            <Link to="/logged-in" className="btn btn-ghost text-black text-lg">
+              Search Parks
+            </Link>
+          </div>
+        ) : (
+          <div className="text-center items-center flex justify-center py-12">
+            <Link to="/sign-in" className="btn btn-ghost text-black text-lg">
+              Sign-In
+            </Link>
+            <span className="text-black">/</span>
+            <Link to="/sign-up" className="btn btn-ghost text-black text-lg">
+              Sign-Up
+            </Link>
+          </div>
+        )}
+        {/* <div className="text-center items-center flex justify-center py-12">
           <Link to="/sign-in" className="btn btn-ghost text-black text-lg">
             Sign-In
           </Link>
@@ -39,7 +58,7 @@ export function LandingPage() {
           <Link to="/sign-up" className="btn btn-ghost text-black text-lg">
             Sign-Up
           </Link>
-        </div>
+        </div> */}
         <div className="flex justify-center items-end pt-20">
           <RollerCoaster />
         </div>

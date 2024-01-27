@@ -4,6 +4,7 @@ import express from 'express';
 import pg from 'pg';
 import {
   ClientError,
+  authMiddleware,
   defaultMiddleware,
   errorMiddleware,
 } from './lib/index.js';
@@ -20,6 +21,12 @@ type User = {
 type Auth = {
   username: string;
   password: string;
+};
+
+type FavoriteInfo = {
+  userId: number;
+  attractionId: string;
+  parkId: string;
 };
 
 const connectionString =
@@ -105,6 +112,43 @@ app.get('/api/parks', async (req, res, next) => {
     const result = await db.query(sql);
     const parks = result.rows;
     res.status(200).json(parks);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/api/heart', async (req, res, next) => {
+  try {
+    const { userId, attractionId, parkId } = req.body as FavoriteInfo;
+
+    if (!attractionId)
+      throw new ClientError(400, 'attractionId is required fields');
+    if (!userId) throw new ClientError(400, 'userId is required fields');
+
+    if (!parkId) throw new ClientError(400, 'parkId is required fields');
+    const sql = `
+    INSERT INTO "userAttractions" ("userId", "attractionId", "parkId")
+    VALUES ($1, $2, $3)
+    RETURNING *
+    `;
+    const params = [userId, attractionId, parkId];
+    const result = await db.query(sql, params);
+    const [favoriteRide] = result.rows;
+    res.status(201).json(favoriteRide);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/favorite', authMiddleware, async (req, res, next) => {
+  try {
+    const sql = `
+    SELECT * from "userAttractions"
+    WHERE "userId" = $1
+    `;
+    const result = await db.query(sql, [req.user?.userId]);
+    const favoriteRides = result.rows;
+    res.status(201).json(favoriteRides);
   } catch (err) {
     next(err);
   }

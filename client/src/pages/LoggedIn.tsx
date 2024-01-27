@@ -4,12 +4,7 @@ import { ParksByDistance } from '../components/ParksByDistance';
 import { useUser } from '../components/useUser';
 import { useNavigate } from 'react-router-dom';
 
-type LoggedInProps = {
-  onSearch: (searchPark) => void;
-  onParkClick: (parkId: string, parkName: string) => void;
-};
-
-export function LoggedIn({ onSearch, onParkClick }: LoggedInProps) {
+export function LoggedIn() {
   const navigate = useNavigate();
   const { user } = useUser();
   const [location, setLocation] = useState<Location>();
@@ -29,13 +24,11 @@ export function LoggedIn({ onSearch, onParkClick }: LoggedInProps) {
     const form = event.currentTarget;
     const formData = new FormData(form);
     const searchInput = formData.get('search-input');
-    onSearch(searchInput);
-    navigate('/search');
+    navigate(`/search/?q=${searchInput}`);
   }
 
-  function handleParkClick(parkId: string, parkName: string) {
-    onParkClick(parkId, parkName);
-    navigate('/park');
+  function handleParkClick(parkId: string) {
+    navigate(`/park/?id=${parkId}`);
   }
 
   return (

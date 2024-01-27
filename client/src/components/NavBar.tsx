@@ -45,6 +45,9 @@ export function NavBar({ onSignOut }: NavBarProps) {
                     Search Parks
                   </Link>
                 </li>
+                <li>
+                  <Link to="/favorite">Favorite Rides</Link>
+                </li>
               </ul>
             </div>
           </div>
