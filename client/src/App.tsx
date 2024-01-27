@@ -11,6 +11,7 @@ import { Auth, User } from './lib/api';
 import { UserProvider } from './components/AppContext';
 import { SearchResults } from './pages/SearchResults';
 import { ClickedPark } from './pages/ClickedPark';
+import { FavoriteRides } from './pages/FavoriteRides';
 
 export const tokenKey = 'user';
 
@@ -19,8 +20,8 @@ export default function App() {
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
   const [isAuthorizing, setIsAuthorizing] = useState(true);
-  const [clickedParkId, setClickedParkId] = useState<string>('');
-  const [clickedParkName, setClickedParkName] = useState<string>('');
+  // const [clickedParkId, setClickedParkId] = useState<string>('');
+  // const [clickedParkName, setClickedParkName] = useState<string>('');
 
   useEffect(() => {
     const auth = localStorage.getItem(tokenKey);
@@ -45,21 +46,11 @@ export default function App() {
     navigate('/');
   }
 
-  function handleParkClick(parkId: string, parkName: string) {
-    const parkInfo = [parkId, parkName];
-    localStorage.setItem('parkInfo', JSON.stringify(parkInfo));
-    setClickedParkId(parkId);
-    setClickedParkName(parkName);
-    navigate('/park');
-  }
-
   if (isAuthorizing) return null;
 
   const contextValue = {
     user,
     token,
-    clickedParkId,
-    clickedParkName,
   };
 
   return (
@@ -72,10 +63,8 @@ export default function App() {
             path="/sign-in"
             element={<SignInForm onSignIn={handleSignIn} />}
           />
-          <Route
-            path="/logged-in"
-            element={<LoggedIn onParkClick={handleParkClick} />}
-          />
+          <Route path="/favorite" element={<FavoriteRides />} />
+          <Route path="/logged-in" element={<LoggedIn />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/park" element={<ClickedPark />} />
           <Route path="*" element={<NotFound />} />

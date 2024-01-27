@@ -23,7 +23,7 @@ export function SearchResults() {
     getParkDetails();
   }, []);
 
-  function handleParkClick(parkId) {
+  function handleParkClick(parkId: string) {
     navigate(`/park/?id=${parkId}`);
   }
 

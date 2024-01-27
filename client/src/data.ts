@@ -1,6 +1,7 @@
 import { LiveAPIResult, RideInfo } from './components/FetchRides';
 import { ParkLocation } from './components/ParksByDistance';
 import { Schedule, ScheduleAPIResult } from './pages/ClickedPark';
+import { FavoriteRideInfo } from './pages/FavoriteRides';
 
 export async function fetchParks(): Promise<ParkLocation[]> {
   const res = await fetch('/api/parks');
@@ -57,4 +58,11 @@ export async function fetchAllRides(
     throw new Error(`${res.status}: Unable to fetch rides from park`);
   const resJSON = (await res.json()) as LiveAPIResult;
   return resJSON.liveData;
+}
+
+export async function fetchAllFavoriteRides(): Promise<FavoriteRideInfo[]> {
+  const res = await fetch('/api/heart');
+  if (!res.ok) throw new Error(`${res.status}: Unable to fetch favorite rides`);
+  const resJSON = (await res.json()) as FavoriteRideInfo[];
+  return resJSON;
 }
