@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useUser } from '../components/useUser';
 import { ParkLocation } from '../components/ParksByDistance';
 import { fetchParks } from '../data';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-type SearchResultsProps = {
-  onParkClick: (parkId: string, parkName: string) => void;
-};
-
-export function SearchResults({ onParkClick }: SearchResultsProps) {
-  const { searchedPark } = useUser();
+export function SearchResults() {
   const [parkList, setParkList] = useState<ParkLocation[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getParkDetails() {
@@ -18,10 +16,18 @@ export function SearchResults({ onParkClick }: SearchResultsProps) {
         setParkList(result);
       } catch (err) {
         console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     }
     getParkDetails();
   }, []);
+
+  function handleParkClick(parkId) {
+    navigate(`/park/?id=${parkId}`);
+  }
+
+  const searchedPark = params.get('q');
 
   const filteredParks = parkList?.filter((item) =>
     item.parkName
@@ -31,12 +37,24 @@ export function SearchResults({ onParkClick }: SearchResultsProps) {
 
   const list = filteredParks?.map((i, index) => (
     <button
-      onClick={() => onParkClick(i.parkId, i.parkName)}
+      onClick={() => handleParkClick(i.parkId)}
       className="btn btn-ghost btn-md text-xl"
       key={index}>
       {i.parkName}
     </button>
   ));
+
+  if (isLoading)
+    return (
+      <div className="bg-white h-screen">
+        <h1 className="text-black font-2 text-3xl py-5 text-center underline">
+          Search Result:
+        </h1>
+        <p className="flex justify-center flex-col py-5 font-1 text-black text-center text-xl">
+          Loading Information!
+        </p>
+      </div>
+    );
 
   return (
     <div className="bg-white h-screen">
@@ -46,7 +64,10 @@ export function SearchResults({ onParkClick }: SearchResultsProps) {
       <ul>
         {list?.length === 0 ? (
           <div className="flex justify-center flex-col py-5 font-1 text-black text-center text-xl">
-            <p>Oops! Adventures Await, but the Theme Park Couldn't Be Found.</p>
+            <p>
+              Oops! Adventures Await, but the "{searchedPark}" Couldn't Be
+              Found.
+            </p>
             <p className="pt-8">Please double-check the name and try again.</p>
           </div>
         ) : (

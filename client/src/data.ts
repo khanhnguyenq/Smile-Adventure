@@ -1,18 +1,24 @@
+import { LiveAPIResult, RideInfo } from './components/FetchRides';
 import { ParkLocation } from './components/ParksByDistance';
-import { Schedule } from './pages/ClickedPark';
-
-type ScheduleAPIResult = {
-  id: string;
-  name: string;
-  entityType: string;
-  timezone: string;
-  schedule: Schedule[];
-};
+import { Schedule, ScheduleAPIResult } from './pages/ClickedPark';
 
 export async function fetchParks(): Promise<ParkLocation[]> {
   const res = await fetch('/api/parks');
   if (!res.ok) throw new Error(`fetch Error ${res.status}`);
   return await res.json();
+}
+export async function fetchParkInformation(
+  parkId: ParkLocation['parkId']
+): Promise<ScheduleAPIResult> {
+  let result = {} as ScheduleAPIResult;
+  const res = await fetch(
+    `https://api.themeparks.wiki/v1/entity/${parkId}/schedule`
+  );
+  if (!res.ok)
+    throw new Error(`${res.status}: Unable to fetch operating hours`);
+  const resJSON = (await res.json()) as ScheduleAPIResult;
+  result = resJSON;
+  return result;
 }
 
 export async function fetchParkHours(
@@ -40,35 +46,6 @@ export async function fetchParkHours(
   }
   return result;
 }
-
-export type ForecastDetails = {
-  time: string;
-  waitTime: number;
-};
-
-export type WaitTime = {
-  waitTime: number;
-};
-
-export type STANDBY = {
-  STANDBY: WaitTime;
-};
-
-export type RideInfo = {
-  name: string;
-  entityType: string;
-  status: string;
-  queue: STANDBY;
-  forecast: ForecastDetails[];
-};
-
-export type LiveAPIResult = {
-  id: string;
-  name: string;
-  entityType: string;
-  timezone: string;
-  liveData: RideInfo[];
-};
 
 export async function fetchAllRides(
   parkId: ParkLocation['parkId']

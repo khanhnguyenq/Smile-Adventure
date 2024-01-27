@@ -11,8 +11,6 @@ import { Auth, User } from './lib/api';
 import { UserProvider } from './components/AppContext';
 import { SearchResults } from './pages/SearchResults';
 import { ClickedPark } from './pages/ClickedPark';
-// import { FetchParks } from './components/FetchParks';
-// import { FetchLocation } from './components/FetchLocation';
 
 export const tokenKey = 'user';
 
@@ -20,7 +18,6 @@ export default function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
-  const [searchedPark, setSearchedPark] = useState<string>();
   const [isAuthorizing, setIsAuthorizing] = useState(true);
   const [clickedParkId, setClickedParkId] = useState<string>('');
   const [clickedParkName, setClickedParkName] = useState<string>('');
@@ -33,12 +30,6 @@ export default function App() {
       setToken(a.token);
     }
     setIsAuthorizing(false);
-    const parkInfo = localStorage.getItem('parkInfo');
-    if (parkInfo) {
-      const items = JSON.parse(parkInfo);
-      setClickedParkId(items.parkId);
-      setClickedParkName(items.parkName);
-    }
   }, []);
 
   function handleSignIn(auth: Auth) {
@@ -54,10 +45,6 @@ export default function App() {
     navigate('/');
   }
 
-  function handleSearch(searchPark: string) {
-    setSearchedPark(searchPark);
-  }
-
   function handleParkClick(parkId: string, parkName: string) {
     const parkInfo = [parkId, parkName];
     localStorage.setItem('parkInfo', JSON.stringify(parkInfo));
@@ -71,7 +58,6 @@ export default function App() {
   const contextValue = {
     user,
     token,
-    searchedPark,
     clickedParkId,
     clickedParkName,
   };
@@ -88,26 +74,13 @@ export default function App() {
           />
           <Route
             path="/logged-in"
-            element={
-              <LoggedIn
-                onParkClick={handleParkClick}
-                onSearch={(i) => {
-                  handleSearch(i);
-                }}
-              />
-            }
+            element={<LoggedIn onParkClick={handleParkClick} />}
           />
-          <Route
-            path="/search"
-            element={<SearchResults onParkClick={handleParkClick} />}
-          />
+          <Route path="/search" element={<SearchResults />} />
           <Route path="/park" element={<ClickedPark />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </UserProvider>
-
-    // <FetchParks />
-    // <FetchLocation />
   );
 }

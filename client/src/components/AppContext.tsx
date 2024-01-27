@@ -4,7 +4,6 @@ import { User } from '../lib/api';
 export type AppContextValues = {
   user: User | undefined;
   token: string | undefined;
-  searchedPark: string | undefined;
   clickedParkId: string | undefined;
   clickedParkName: string | undefined;
 };
@@ -12,7 +11,6 @@ export type AppContextValues = {
 export const AppContext = createContext<AppContextValues>({
   user: undefined,
   token: undefined,
-  searchedPark: undefined,
   clickedParkId: undefined,
   clickedParkName: undefined,
 });

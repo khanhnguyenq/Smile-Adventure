@@ -1,12 +1,43 @@
 import { useEffect, useState } from 'react';
-import { useUser } from '../components/useUser';
-import { RideInfo, fetchAllRides } from '../data';
+import { fetchAllRides } from '../data';
+import { FavoriteButton } from './FavoriteButton';
+import { useSearchParams } from 'react-router-dom';
+
+export type ForecastDetails = {
+  time: string;
+  waitTime: number;
+};
+
+export type WaitTime = {
+  waitTime: number;
+};
+
+export type STANDBY = {
+  STANDBY: WaitTime;
+};
+
+export type RideInfo = {
+  name: string;
+  entityType: string;
+  status: string;
+  queue: STANDBY;
+  forecast: ForecastDetails[];
+};
+
+export type LiveAPIResult = {
+  id: string;
+  name: string;
+  entityType: string;
+  timezone: string;
+  liveData: RideInfo[];
+};
 
 export function FetchRides() {
-  const { clickedParkId } = useUser();
   const [rideInfo, setRideInfo] = useState<RideInfo[]>([]);
   const [error, setError] = useState<unknown>();
-  // const [view, setView] = useState('longest');
+  const [params] = useSearchParams();
+
+  const clickedParkId = params.get('id');
 
   useEffect(() => {
     async function getRidesInfo() {
@@ -44,30 +75,9 @@ export function FetchRides() {
     }
   }
 
-  // const sortShortest = openRides.sort(
-  //   (a, b) => a.queue.STANDBY.waitTime - b.queue.STANDBY.waitTime
-  // );
-
   const sortLongest = openRides.sort(
     (a, b) => b.queue.STANDBY.waitTime - a.queue.STANDBY.waitTime
   );
-
-  // const ridesListShortest = sortShortest.map((i, index) => (
-  //   <div
-  //     className="p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-1/2"
-  //     key={index}>
-  //     <div className="flex justify-between">
-  //       <p>{i.name}</p>
-  //       <p>F</p>
-  //     </div>
-  //     <p>Status: Operating</p>
-  //     <p>
-  //       {`Wait time: ${
-  //         i.queue.STANDBY.waitTime === null ? '0' : i.queue.STANDBY.waitTime
-  //       } Minutes`}
-  //     </p>
-  //   </div>
-  // ));
 
   const ridesListLongest = sortLongest.map((i, index) => (
     <div
@@ -75,7 +85,7 @@ export function FetchRides() {
       key={index}>
       <div className="flex justify-between">
         <p>{i.name}</p>
-        <p>F</p>
+        <FavoriteButton />
       </div>
       <p>Status: Operating</p>
       <p>
