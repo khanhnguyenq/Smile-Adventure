@@ -22,6 +22,7 @@ CREATE TABLE "parks" (
 );
 
 CREATE TABLE "userAttractions" (
+  "entryId" serial,
   "userId" integer,
   "attractionId" text,
   "parkId" text,

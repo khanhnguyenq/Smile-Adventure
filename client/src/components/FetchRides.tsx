@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react';
-import { fetchAllRides, fetchParkInformation } from '../data';
+import {
+  fetchAllFavoriteRides,
+  fetchAllRides,
+  fetchParkInformation,
+  insertToFavorite,
+  removeFromFavorite,
+} from '../data';
 import { FavoriteButton } from './FavoriteButton';
 import { useSearchParams } from 'react-router-dom';
 import { useUser } from './useUser';
+import { FavoriteRideInfo } from '../pages/FavoriteRides';
 
 export type ForecastDetails = {
   time: string;
@@ -35,9 +42,11 @@ export type LiveAPIResult = {
 };
 
 export function FetchRides() {
+  const [favoriteRides, setFavoriteRides] = useState<FavoriteRideInfo[]>([]);
   const [rideInfo, setRideInfo] = useState<RideInfo[]>([]);
   const [parkInfo, setParkInfo] = useState<Partial<LiveAPIResult>>();
   const [error, setError] = useState<unknown>();
+  const [isLoading, setIsLoading] = useState(true);
   const [params] = useSearchParams();
   const { user } = useUser();
 
@@ -67,12 +76,28 @@ export function FetchRides() {
     getParkInfo();
   }, []);
 
+  useEffect(() => {
+    async function getFavoriteRidesInfo() {
+      try {
+        const result = await fetchAllFavoriteRides();
+        setFavoriteRides(result);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getFavoriteRidesInfo();
+  }, []);
+
   if (error)
     return (
       <div>
         Error: {error instanceof Error ? error.message : 'Unknown Error'}
       </div>
     );
+
+  if (isLoading) return <div>Loading!</div>;
 
   if (!rideInfo) throw new Error('Error obtaining all rides');
 
@@ -97,17 +122,26 @@ export function FetchRides() {
   );
 
   async function handleSelect(attractionId) {
+    // does not work without reloading
     try {
       const userId = user?.userId;
       const parkId = parkInfo?.id;
       const favoriteRideData = { userId, attractionId, parkId };
-      const req = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(favoriteRideData),
-      };
-      const res = await fetch('/api/heart', req);
-      if (!res.ok) throw new Error('Error inserting into favorite table');
+      let foundItem;
+      for (let i = 0; i < favoriteRides.length; i++) {
+        if (
+          favoriteRides[i].attractionId === favoriteRideData.attractionId &&
+          favoriteRides[i].parkId === favoriteRideData.parkId &&
+          favoriteRides[i].userId === favoriteRideData.userId
+        ) {
+          foundItem = favoriteRides[i].entryId;
+        }
+      }
+      if (!foundItem) {
+        await insertToFavorite(favoriteRideData);
+      } else {
+        await removeFromFavorite(foundItem);
+      }
     } catch (err) {
       setError(err);
     }

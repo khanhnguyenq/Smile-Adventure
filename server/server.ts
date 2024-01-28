@@ -140,6 +140,29 @@ app.post('/api/heart', async (req, res, next) => {
   }
 });
 
+app.delete('/api/heart/:entryId', authMiddleware, async (req, res, next) => {
+  try {
+    const entryId = Number(req.params.entryId);
+    if (!Number.isInteger(entryId)) {
+      throw new ClientError(400, 'entryId must be an integer');
+    }
+    const sql = `
+      delete from "userAttractions"
+        where "entryId" = $1 and "userId" = $2
+        returning *;
+    `;
+    const params = [entryId, req.user?.userId];
+    const result = await db.query<FavoriteInfo>(sql, params);
+    const [deleted] = result.rows;
+    if (!deleted) {
+      throw new ClientError(404, `Entry with id ${entryId} not found`);
+    }
+    res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+});
+
 app.get('/api/favorite', authMiddleware, async (req, res, next) => {
   try {
     const sql = `

@@ -5,15 +5,15 @@ type FavoriteButtonProps = {
 };
 
 export function FavoriteButton({ onSelect }: FavoriteButtonProps) {
-  const [favorite, setFavorite] = useState<boolean>(false);
+  const [clicked, setIsClicked] = useState(false);
 
   return (
     <div onClick={onSelect}>
-      <button onClick={() => setFavorite(!favorite)} className="btn btn-ghost">
+      <button onClick={() => setIsClicked(!clicked)} className="btn btn-ghost">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
-          fill={favorite ? 'red' : 'none'}
+          fill={clicked ? 'red' : 'none'}
           viewBox="0 0 24 24"
           stroke="currentColor">
           <path

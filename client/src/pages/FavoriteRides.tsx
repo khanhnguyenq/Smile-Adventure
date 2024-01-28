@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchAllFavoriteRides } from '../data';
 
 export type FavoriteRideInfo = {
+  entryId: number;
   userId: number;
   attractionId: string;
   parkId: string;
