@@ -2,17 +2,19 @@ import { useState } from 'react';
 
 type FavoriteButtonProps = {
   onSelect: () => void;
-  onDelete: () => void;
 };
 
-export function FavoriteButton({ onSelect, onDelete }: FavoriteButtonProps) {
+export function FavoriteButton({ onSelect }: FavoriteButtonProps) {
   const [clicked, setIsClicked] = useState(false);
 
   return (
     <>
-      <div onClick={onSelect}>
+      <div>
         <button
-          onClick={() => setIsClicked(!clicked)}
+          onClick={() => {
+            setIsClicked(!clicked);
+            onSelect();
+          }}
           className="btn btn-ghost">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +35,7 @@ export function FavoriteButton({ onSelect, onDelete }: FavoriteButtonProps) {
         <button
           onClick={() => {
             setIsClicked(!clicked);
-            onDelete();
+            onSelect();
           }}>
           Delete
         </button>

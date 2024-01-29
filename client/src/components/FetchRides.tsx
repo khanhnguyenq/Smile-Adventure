@@ -126,32 +126,23 @@ export function FetchRides() {
       const userId = user?.userId;
       const parkId = parkInfo?.id;
       const favoriteRideData = { userId, attractionId, parkId };
-      const result = await insertToFavorite(favoriteRideData);
-      setFavoriteRides([...favoriteRides, result]);
-    } catch (err) {
-      setError(err);
-    }
-  }
-
-  async function handleDelete(attractionId) {
-    try {
-      const userId = user?.userId;
-      const parkId = parkInfo?.id;
-
       const entryId = favoriteRides.find(
         (item) =>
           item.userId === userId &&
           item.attractionId === attractionId &&
           item.parkId === parkId
       );
-
       const deleteId = entryId?.entryId;
-
-      const updatedFavorite = favoriteRides.filter(
-        (item) => item.entryId !== deleteId
-      );
-      await removeFromFavorite(deleteId);
-      setFavoriteRides(updatedFavorite);
+      if (deleteId) {
+        const updatedFavorite = favoriteRides.filter(
+          (item) => item.entryId !== deleteId
+        );
+        await removeFromFavorite(deleteId);
+        setFavoriteRides(updatedFavorite);
+      } else {
+        const result = await insertToFavorite(favoriteRideData);
+        setFavoriteRides([...favoriteRides, result]);
+      }
     } catch (err) {
       setError(err);
     }
@@ -167,7 +158,6 @@ export function FetchRides() {
           onSelect={() => {
             handleSelect(i.id);
           }}
-          onDelete={() => handleDelete(i.id)}
         />
       </div>
       <p>Status: Operating</p>
