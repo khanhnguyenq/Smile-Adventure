@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { fetchAllFavoriteRides } from '../data';
 
 export type FavoriteRideInfo = {
+  entryId: number;
   userId: number;
   attractionId: string;
   parkId: string;
+  rideName: string;
+  parkName: string;
 };
 
 export function FavoriteRides() {
@@ -36,11 +39,13 @@ export function FavoriteRides() {
   if (isLoading) return <div>Loading!</div>;
 
   const list = favoriteRides.map((i, index) => (
-    <li key={index}>{i.attractionId}</li>
+    <li key={index} className="text-black font-1">
+      {i.parkName} - {i.rideName}
+    </li>
   ));
 
   return (
-    <div>
+    <div className="flex flex-col content-center flex-wrap bg-white h-screen">
       <ul>{list}</ul>
     </div>
   );

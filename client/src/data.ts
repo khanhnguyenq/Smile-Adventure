@@ -72,3 +72,26 @@ export async function fetchAllFavoriteRides(): Promise<FavoriteRideInfo[]> {
   const resJSON = (await res.json()) as FavoriteRideInfo[];
   return resJSON;
 }
+
+export async function insertToFavorite(favoriteRideData) {
+  const req = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(favoriteRideData),
+  };
+  const res = await fetch('/api/heart', req);
+  if (!res.ok) throw new Error('Error inserting into favorite table');
+  const resJSON = await res.json();
+  return resJSON;
+}
+
+export async function removeFromFavorite(favoriteRideEntry) {
+  const req = {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    },
+  };
+  const res = await fetch(`/api/heart/${favoriteRideEntry}`, req);
+  if (!res.ok) throw new Error('Error removing ride from favorite');
+}

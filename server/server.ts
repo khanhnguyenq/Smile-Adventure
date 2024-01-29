@@ -27,6 +27,8 @@ type FavoriteInfo = {
   userId: number;
   attractionId: string;
   parkId: string;
+  parkName: string;
+  rideName: string;
 };
 
 const connectionString =
@@ -119,7 +121,8 @@ app.get('/api/parks', async (req, res, next) => {
 
 app.post('/api/heart', async (req, res, next) => {
   try {
-    const { userId, attractionId, parkId } = req.body as FavoriteInfo;
+    const { userId, attractionId, parkId, parkName, rideName } =
+      req.body as FavoriteInfo;
 
     if (!attractionId)
       throw new ClientError(400, 'attractionId is required fields');
@@ -127,14 +130,37 @@ app.post('/api/heart', async (req, res, next) => {
 
     if (!parkId) throw new ClientError(400, 'parkId is required fields');
     const sql = `
-    INSERT INTO "userAttractions" ("userId", "attractionId", "parkId")
-    VALUES ($1, $2, $3)
+    INSERT INTO "userAttractions" ("userId", "attractionId", "parkId", "parkName", "rideName")
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *
     `;
-    const params = [userId, attractionId, parkId];
+    const params = [userId, attractionId, parkId, parkName, rideName];
     const result = await db.query(sql, params);
     const [favoriteRide] = result.rows;
     res.status(201).json(favoriteRide);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.delete('/api/heart/:entryId', authMiddleware, async (req, res, next) => {
+  try {
+    const entryId = Number(req.params.entryId);
+    if (!Number.isInteger(entryId)) {
+      throw new ClientError(400, 'entryId must be an integer');
+    }
+    const sql = `
+      delete from "userAttractions"
+        where "entryId" = $1 and "userId" = $2
+        returning *;
+    `;
+    const params = [entryId, req.user?.userId];
+    const result = await db.query<FavoriteInfo>(sql, params);
+    const [deleted] = result.rows;
+    if (!deleted) {
+      throw new ClientError(404, `Entry with id ${entryId} not found`);
+    }
+    res.sendStatus(204).json(deleted);
   } catch (err) {
     next(err);
   }
