@@ -122,26 +122,36 @@ export function FetchRides() {
   );
 
   async function handleSelect(attractionId) {
-    // does not work without reloading
     try {
       const userId = user?.userId;
       const parkId = parkInfo?.id;
       const favoriteRideData = { userId, attractionId, parkId };
-      let foundItem;
-      for (let i = 0; i < favoriteRides.length; i++) {
-        if (
-          favoriteRides[i].attractionId === favoriteRideData.attractionId &&
-          favoriteRides[i].parkId === favoriteRideData.parkId &&
-          favoriteRides[i].userId === favoriteRideData.userId
-        ) {
-          foundItem = favoriteRides[i].entryId;
-        }
-      }
-      if (!foundItem) {
-        await insertToFavorite(favoriteRideData);
-      } else {
-        await removeFromFavorite(foundItem);
-      }
+      const result = await insertToFavorite(favoriteRideData);
+      setFavoriteRides([...favoriteRides, result]);
+    } catch (err) {
+      setError(err);
+    }
+  }
+
+  async function handleDelete(attractionId) {
+    try {
+      const userId = user?.userId;
+      const parkId = parkInfo?.id;
+
+      const entryId = favoriteRides.find(
+        (item) =>
+          item.userId === userId &&
+          item.attractionId === attractionId &&
+          item.parkId === parkId
+      );
+
+      const deleteId = entryId?.entryId;
+
+      const updatedFavorite = favoriteRides.filter(
+        (item) => item.entryId !== deleteId
+      );
+      await removeFromFavorite(deleteId);
+      setFavoriteRides(updatedFavorite);
     } catch (err) {
       setError(err);
     }
@@ -157,6 +167,7 @@ export function FetchRides() {
           onSelect={() => {
             handleSelect(i.id);
           }}
+          onDelete={() => handleDelete(i.id)}
         />
       </div>
       <p>Status: Operating</p>

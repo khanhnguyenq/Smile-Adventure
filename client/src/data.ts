@@ -81,6 +81,8 @@ export async function insertToFavorite(favoriteRideData) {
   };
   const res = await fetch('/api/heart', req);
   if (!res.ok) throw new Error('Error inserting into favorite table');
+  const resJSON = await res.json();
+  return resJSON;
 }
 
 export async function removeFromFavorite(favoriteRideEntry) {

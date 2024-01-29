@@ -157,7 +157,7 @@ app.delete('/api/heart/:entryId', authMiddleware, async (req, res, next) => {
     if (!deleted) {
       throw new ClientError(404, `Entry with id ${entryId} not found`);
     }
-    res.sendStatus(204);
+    res.sendStatus(204).json(deleted);
   } catch (err) {
     next(err);
   }
