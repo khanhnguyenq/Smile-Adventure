@@ -127,15 +127,19 @@ export function FetchRides() {
     }
   }
 
-  const sortLongest = openRides.sort(
-    (a, b) => b.queue.STANDBY.waitTime - a.queue.STANDBY.waitTime
-  );
-
-  async function handleSelect(attractionId) {
+  async function handleSelect(attractionId, attractionName) {
     try {
       const userId = user?.userId;
       const parkId = parkInfo?.id;
-      const favoriteRideData = { userId, attractionId, parkId };
+      const parkName = parkInfo?.name;
+      const rideName = attractionName;
+      const favoriteRideData = {
+        userId,
+        attractionId,
+        parkId,
+        parkName,
+        rideName,
+      };
       const foundItem = favoriteRides.find(
         (item) =>
           item.userId === userId &&
@@ -171,11 +175,9 @@ export function FetchRides() {
     }
   }
 
-  const allRideId: string[] = [];
-
-  for (let i = 0; i < rideInfo.length; i++) {
-    allRideId.push(rideInfo[i].id);
-  }
+  const sortLongest = openRides.sort(
+    (a, b) => b.queue.STANDBY.waitTime - a.queue.STANDBY.waitTime
+  );
 
   const ridesListLongest = sortLongest.map((i, index) => (
     <div
@@ -187,14 +189,14 @@ export function FetchRides() {
           <FavoriteButton
             favorite="Yes"
             onSelect={() => {
-              handleSelect(i.id);
+              handleSelect(i.id, i.name);
             }}
           />
         ) : (
           <FavoriteButton
             favorite="No"
             onSelect={() => {
-              handleSelect(i.id);
+              handleSelect(i.id, i.name);
             }}
           />
         )}

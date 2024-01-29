@@ -1,13 +1,48 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { GetUserLocation, Location } from '../components/GetUserLocation';
 import { ParksByDistance } from '../components/ParksByDistance';
 import { useUser } from '../components/useUser';
 import { useNavigate } from 'react-router-dom';
+import { fetchAllFavoriteRides } from '../data';
+import { FavoriteRideInfo } from './FavoriteRides';
 
 export function LoggedIn() {
   const navigate = useNavigate();
   const { user } = useUser();
   const [location, setLocation] = useState<Location>();
+  const [favoriteRides, setFavoriteRides] = useState<FavoriteRideInfo[]>([]);
+  const [error, setError] = useState<unknown>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function getFavoriteRidesInfo() {
+      try {
+        const result = await fetchAllFavoriteRides();
+        setFavoriteRides(result);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getFavoriteRidesInfo();
+  }, []);
+
+  const savedRides: string[] = [];
+  for (let i = 0; i < favoriteRides.length; i++) {
+    savedRides.push(favoriteRides[i].attractionId);
+  }
+
+  localStorage.setItem('entryIdArray', JSON.stringify(savedRides));
+
+  if (error)
+    return (
+      <div>
+        Error: {error instanceof Error ? error.message : 'Unknown Error'}
+      </div>
+    );
+
+  if (isLoading) return <div>Loading!</div>;
 
   if (!user) throw new Error('Not Logged In');
   const displayName = user.username.replace(

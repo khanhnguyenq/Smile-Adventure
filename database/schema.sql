@@ -26,6 +26,8 @@ CREATE TABLE "userAttractions" (
   "userId" integer,
   "attractionId" text,
   "parkId" text,
+  "parkName" text,
+  "rideName" text,
   PRIMARY KEY ("userId", "attractionId", "parkId")
 );
 

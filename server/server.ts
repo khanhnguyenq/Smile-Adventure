@@ -27,6 +27,8 @@ type FavoriteInfo = {
   userId: number;
   attractionId: string;
   parkId: string;
+  parkName: string;
+  rideName: string;
 };
 
 const connectionString =
@@ -119,7 +121,8 @@ app.get('/api/parks', async (req, res, next) => {
 
 app.post('/api/heart', async (req, res, next) => {
   try {
-    const { userId, attractionId, parkId } = req.body as FavoriteInfo;
+    const { userId, attractionId, parkId, parkName, rideName } =
+      req.body as FavoriteInfo;
 
     if (!attractionId)
       throw new ClientError(400, 'attractionId is required fields');
@@ -127,11 +130,11 @@ app.post('/api/heart', async (req, res, next) => {
 
     if (!parkId) throw new ClientError(400, 'parkId is required fields');
     const sql = `
-    INSERT INTO "userAttractions" ("userId", "attractionId", "parkId")
-    VALUES ($1, $2, $3)
+    INSERT INTO "userAttractions" ("userId", "attractionId", "parkId", "parkName", "rideName")
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *
     `;
-    const params = [userId, attractionId, parkId];
+    const params = [userId, attractionId, parkId, parkName, rideName];
     const result = await db.query(sql, params);
     const [favoriteRide] = result.rows;
     res.status(201).json(favoriteRide);
