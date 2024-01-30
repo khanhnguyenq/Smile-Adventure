@@ -35,7 +35,7 @@ export function ClickedPark() {
   useEffect(() => {
     async function getParkInformation() {
       try {
-        const result = await fetchParkInformation('' + clickedParkId);
+        const result = await fetchParkInformation(clickedParkId ?? '');
         setParkInformation(result);
       } catch (err) {
         setError(err);
@@ -49,7 +49,7 @@ export function ClickedPark() {
   useEffect(() => {
     async function getParkOperatingHours() {
       try {
-        const result = await fetchParkHours('' + clickedParkId);
+        const result = await fetchParkHours(clickedParkId ?? '');
         setParkHours(result);
       } catch (err) {
         setError(err);
