@@ -11,7 +11,8 @@ import { Auth, User } from './lib/api';
 import { UserProvider } from './components/AppContext';
 import { SearchResults } from './pages/SearchResults';
 import { ClickedPark } from './pages/ClickedPark';
-import { FavoriteRides } from './pages/FavoriteRides';
+import { FavoriteRideInfo, FavoriteRides } from './pages/FavoriteRides';
+import { fetchAllFavoriteRides } from './data';
 
 export const tokenKey = 'user';
 
@@ -19,9 +20,10 @@ export default function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
+  const [favoriteRides, setFavoriteRides] = useState<FavoriteRideInfo[]>([]);
   const [isAuthorizing, setIsAuthorizing] = useState(true);
-  // const [clickedParkId, setClickedParkId] = useState<string>('');
-  // const [clickedParkName, setClickedParkName] = useState<string>('');
+  const [error, setError] = useState<unknown>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const auth = localStorage.getItem(tokenKey);
@@ -31,6 +33,20 @@ export default function App() {
       setToken(a.token);
     }
     setIsAuthorizing(false);
+  }, []);
+
+  useEffect(() => {
+    async function getFavoriteRidesInfo() {
+      try {
+        const result = await fetchAllFavoriteRides();
+        setFavoriteRides(result);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getFavoriteRidesInfo();
   }, []);
 
   function handleSignIn(auth: Auth) {
@@ -46,11 +62,34 @@ export default function App() {
     navigate('/');
   }
 
+  function removeAttraction(deleteId) {
+    const updatedFavorite = favoriteRides.filter(
+      (item) => item.entryId !== deleteId
+    );
+    setFavoriteRides(updatedFavorite);
+  }
+
+  function addAttraction(result) {
+    setFavoriteRides([...favoriteRides, result]);
+  }
+
   if (isAuthorizing) return null;
+
+  if (error)
+    return (
+      <div>
+        Error: {error instanceof Error ? error.message : 'Unknown Error'}
+      </div>
+    );
+
+  if (isLoading) return <div>Loading!</div>;
 
   const contextValue = {
     user,
     token,
+    favoriteRides,
+    removeAttraction,
+    addAttraction,
   };
 
   return (

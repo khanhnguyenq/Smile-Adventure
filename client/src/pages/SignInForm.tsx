@@ -12,7 +12,11 @@ export function SignInForm({ onSignIn }: SignInFormProps) {
     event.preventDefault();
     try {
       const formData = new FormData(event.currentTarget);
-      const userData = Object.fromEntries(formData.entries());
+      const inputData = Object.fromEntries(formData.entries());
+      const userData = {
+        username: inputData.username.toString().toLowerCase(),
+        password: inputData.password,
+      };
       const req = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
