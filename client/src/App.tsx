@@ -42,12 +42,14 @@ export default function App() {
         setFavoriteRides(result);
       } catch (err) {
         setError(err);
-      } finally {
-        setIsLoading(false);
       }
     }
-    getFavoriteRidesInfo();
-  }, []);
+    if (token) {
+      getFavoriteRidesInfo();
+    }
+    setIsAuthorizing(false);
+    setIsLoading(false);
+  }, [token]);
 
   function handleSignIn(auth: Auth) {
     localStorage.setItem(tokenKey, JSON.stringify(auth));
