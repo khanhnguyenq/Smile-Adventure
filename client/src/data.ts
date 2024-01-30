@@ -30,6 +30,7 @@ export async function fetchParkHours(
   const month = ('0' + (date.getMonth() + 1)).slice(-2);
   const year = date.getFullYear();
   const currentDate = `${year}-${month}-${day}`;
+  const nextDate = `${year}-${month}-${day + 1}`;
   let result = {} as Schedule;
   const res = await fetch(
     `https://api.themeparks.wiki/v1/entity/${parkId}/schedule`
@@ -39,8 +40,9 @@ export async function fetchParkHours(
   const resJSON = (await res.json()) as ScheduleAPIResult;
   for (let i = 0; i < resJSON.schedule.length; i++) {
     if (
-      resJSON.schedule[i].date === currentDate &&
-      resJSON.schedule[i].type === 'OPERATING'
+      resJSON.schedule[i].date === currentDate ||
+      (resJSON.schedule[i].date === nextDate &&
+        resJSON.schedule[i].type === 'OPERATING')
     ) {
       result = resJSON.schedule[i];
     }
