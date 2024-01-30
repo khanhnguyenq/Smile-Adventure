@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchParkHours, fetchParkInformation } from '../data';
 import { FetchRides } from '../components/FetchRides';
 import { useSearchParams } from 'react-router-dom';
+import moment from 'moment-timezone';
 
 export type ScheduleAPIResult = {
   id: string;
@@ -65,32 +66,23 @@ export function ClickedPark() {
   if (!parkHours?.openingTime) {
     openingTime = 'Not Available';
   } else {
-    const time = new Date(parkHours?.openingTime);
-    openingTime = time.toLocaleTimeString('en-GB', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    const dataFormat = parkHours.openingTime.split('T')[1];
+    openingTime = dataFormat.slice(0, 5);
   }
   if (!parkHours?.closingTime) {
     closingTime = 'Not Available';
   } else {
-    const time = new Date(parkHours?.closingTime);
-    closingTime = time.toLocaleTimeString('en-GB', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    const dataFormat = parkHours.closingTime.split('T')[1];
+    closingTime = dataFormat.slice(0, 5);
   }
 
-  let todayDate;
-  if (!parkHours?.date) {
-    const date = new Date();
-    const day = date.getDate();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const year = date.getFullYear();
-    todayDate = `${year}-${month}-${day}`;
-  } else {
-    todayDate = parkHours.date;
-  }
+  const timeAtPark = moment()
+    .tz(`${parkInformation?.timezone}`)
+    .format('HH:mm');
+
+  const dateAtPark = moment()
+    .tz(`${parkInformation?.timezone}`)
+    .format('YYYY-MM-DD');
 
   if (isLoading)
     return (
@@ -113,7 +105,9 @@ export function ClickedPark() {
       <div className="text-center text-black items-center flex flex-col justify-center py-6">
         <p className="font-2 pt-2 text-2xl">{parkInformation?.name}</p>
         <p className="font-1 text-sm pt-1">{parkInformation?.timezone}</p>
-        <p className="font-1 py-1 text-lg">{`Today's Date: ${todayDate}`}</p>
+        <p className="font-1 text-sm pt-1">Current Time at Park:</p>
+        <p className="font-1 text-sm pt-1">{timeAtPark}</p>
+        <p className="font-1 py-1 text-lg">{`Today's Date (At Park): ${dateAtPark}`}</p>
         <p className="font-1 py-1 text-lg">
           {`Operating Hours: ${openingTime} - ${closingTime}`}
         </p>
