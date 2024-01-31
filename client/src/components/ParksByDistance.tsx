@@ -81,7 +81,7 @@ export function ParksByDistance({
   );
 
   const sortedPark = park?.sort((a, b) => a.distance - b.distance);
-  const namesOfSortedPark = sortedPark?.slice(0, 6).map((i, index) => (
+  const namesOfSortedPark = sortedPark?.slice(0, 10).map((i, index) => (
     <button
       onClick={() => onParkClick(i.parkId, i.parkName)}
       className="btn btn-ghost btn-md text-base"

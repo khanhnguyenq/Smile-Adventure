@@ -13,6 +13,8 @@ import { SearchResults } from './pages/SearchResults';
 import { ClickedPark } from './pages/ClickedPark';
 import { FavoriteRideInfo, FavoriteRides } from './pages/FavoriteRides';
 import { fetchAllFavoriteRides } from './data';
+import { AllParks } from './pages/AllParks';
+import { SelectedRide } from './pages/SelectedRide';
 
 export const tokenKey = 'user';
 
@@ -90,6 +92,8 @@ export default function App() {
     user,
     token,
     favoriteRides,
+    handleSignIn,
+    handleSignOut,
     removeAttraction,
     addAttraction,
   };
@@ -97,17 +101,16 @@ export default function App() {
   return (
     <UserProvider value={contextValue}>
       <Routes>
-        <Route path="/" element={<NavBar onSignOut={handleSignOut} />}>
+        <Route path="/" element={<NavBar />}>
           <Route index element={<LandingPage />} />
           <Route path="/sign-up" element={<SignUpForm />} />
-          <Route
-            path="/sign-in"
-            element={<SignInForm onSignIn={handleSignIn} />}
-          />
+          <Route path="/sign-in" element={<SignInForm />} />
           <Route path="/favorite" element={<FavoriteRides />} />
           <Route path="/logged-in" element={<LoggedIn />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/park" element={<ClickedPark />} />
+          <Route path="/ride/:parkId/:rideId" element={<SelectedRide />} />
+          <Route path="/all-parks" element={<AllParks />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

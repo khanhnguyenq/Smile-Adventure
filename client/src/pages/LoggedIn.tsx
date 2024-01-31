@@ -1,48 +1,13 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { GetUserLocation, Location } from '../components/GetUserLocation';
 import { ParksByDistance } from '../components/ParksByDistance';
 import { useUser } from '../components/useUser';
 import { useNavigate } from 'react-router-dom';
-import { fetchAllFavoriteRides } from '../data';
-import { FavoriteRideInfo } from './FavoriteRides';
 
 export function LoggedIn() {
   const navigate = useNavigate();
   const { user } = useUser();
   const [location, setLocation] = useState<Location>();
-  const [favoriteRides, setFavoriteRides] = useState<FavoriteRideInfo[]>([]);
-  const [error, setError] = useState<unknown>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    async function getFavoriteRidesInfo() {
-      try {
-        const result = await fetchAllFavoriteRides();
-        setFavoriteRides(result);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getFavoriteRidesInfo();
-  }, []);
-
-  const savedRides: string[] = [];
-  for (let i = 0; i < favoriteRides.length; i++) {
-    savedRides.push(favoriteRides[i].attractionId);
-  }
-
-  localStorage.setItem('entryIdArray', JSON.stringify(savedRides));
-
-  if (error)
-    return (
-      <div>
-        Error: {error instanceof Error ? error.message : 'Unknown Error'}
-      </div>
-    );
-
-  if (isLoading) return <div>Loading!</div>;
 
   if (!user) throw new Error('Not Logged In');
   const displayName = user.username.replace(
@@ -67,7 +32,7 @@ export function LoggedIn() {
   }
 
   return (
-    <div className="h-screen bg-secondary flex flex-col content-center">
+    <div className="h-screen bg-secondary flex flex-col content-center pt-[68px]">
       <p className="text-black font-2 text-2xl py-5 text-center underline">
         Welcome back, {displayName}!
       </p>
@@ -84,7 +49,7 @@ export function LoggedIn() {
               name="search-input"
               className="input input-bordered w-48 h-8 max-w-xs bg-gray-200 block m-4"
             />
-            <button type="submit" className="btn btn-xs text-white">
+            <button type="submit" className="btn btn-xs bg-primary text-white">
               Search
             </button>
           </label>
@@ -96,7 +61,7 @@ export function LoggedIn() {
       <p className="text-black text-center font-1 text-xl">
         Or find a park based on your location!
       </p>
-      <div>
+      <div className="h-screen bg-secondary">
         {location && (
           <ParksByDistance
             lat={location?.lat}

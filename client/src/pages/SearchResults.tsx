@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export function SearchResults() {
   const [parkList, setParkList] = useState<ParkLocation[]>();
+  const [error, setError] = useState<unknown>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export function SearchResults() {
         const result = await fetchParks();
         setParkList(result);
       } catch (err) {
-        console.log(err);
+        setError(err);
       } finally {
         setIsLoading(false);
       }
@@ -44,9 +45,16 @@ export function SearchResults() {
     </button>
   ));
 
+  if (error)
+    return (
+      <div>
+        Error: {error instanceof Error ? error.message : 'Unknown Error'}
+      </div>
+    );
+
   if (isLoading)
     return (
-      <div className="bg-white h-screen">
+      <div className="bg-white h-screen pt-[68px]">
         <h1 className="text-black font-2 text-3xl py-5 text-center underline">
           Search Result:
         </h1>
@@ -57,7 +65,7 @@ export function SearchResults() {
     );
 
   return (
-    <div className="bg-white h-screen">
+    <div className="bg-white h-screen pt-[68px]">
       <h1 className="text-black font-2 text-3xl py-5 text-center underline">
         Search Result:
       </h1>

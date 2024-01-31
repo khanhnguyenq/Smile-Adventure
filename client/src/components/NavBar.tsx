@@ -2,19 +2,15 @@ import { Link, Outlet } from 'react-router-dom';
 import { Logo } from './Logo';
 import { useUser } from './useUser';
 
-type NavBarProps = {
-  onSignOut: () => void;
-};
-
-export function NavBar({ onSignOut }: NavBarProps) {
-  const { user } = useUser();
+export function NavBar() {
+  const { user, handleSignOut } = useUser();
   return (
-    <div className="container mx-auto">
-      <div className="navbar bg-primary">
+    <div>
+      <div className="navbar bg-primary fixed top-0 z-50">
         <div className="navbar-start">
           <div className="drawer">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content">
+            <div className="drawer-content w-5 cursor-pointer">
               <label htmlFor="my-drawer" className="text-black drawer-button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -48,6 +44,9 @@ export function NavBar({ onSignOut }: NavBarProps) {
                 <li>
                   <Link to="/favorite">Favorite Rides</Link>
                 </li>
+                <li>
+                  <Link to="/all-parks">All Available Parks</Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -55,7 +54,9 @@ export function NavBar({ onSignOut }: NavBarProps) {
         <Logo />
         <div className="navbar-end">
           {user && (
-            <button onClick={onSignOut} className="btn btn-ghost text-black">
+            <button
+              onClick={handleSignOut}
+              className="btn btn-ghost text-black">
               Sign-Out
             </button>
           )}
