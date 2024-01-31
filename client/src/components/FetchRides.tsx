@@ -45,6 +45,7 @@ export function FetchRides() {
   const [error, setError] = useState<unknown>();
   const [isLoading, setIsLoading] = useState(true);
   const [params] = useSearchParams();
+  const [view, setView] = useState<string>();
   const { user, favoriteRides, removeAttraction, addAttraction } = useUser();
   const navigate = useNavigate();
   const clickedParkId = params.get('id');
@@ -154,23 +155,44 @@ export function FetchRides() {
     navigate(`/ride/${parkId}/${rideId}`);
   }
 
-  const sortLongest = openRides.sort(
-    (a, b) => b.queue.STANDBY.waitTime - a.queue.STANDBY.waitTime
-  );
+  const sortLongest = openRides
+    .slice()
+    .sort((a, b) => b.queue.STANDBY.waitTime - a.queue.STANDBY.waitTime);
+
+  const sortShortest = openRides
+    .slice()
+    .sort((a, b) => a.queue.STANDBY.waitTime - b.queue.STANDBY.waitTime);
+
+  const sortName = openRides.slice().sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  });
 
   const rideIdArray: string[] = [];
   for (let i = 0; i < favoriteRides.length; i++) {
     rideIdArray.push(favoriteRides[i].attractionId);
   }
 
-  const ridesListLongest = sortLongest.map((i, index) => (
+  let sortType;
+  view === 'name'
+    ? (sortType = sortName)
+    : view === 'longest'
+    ? (sortType = sortLongest)
+    : (sortType = sortShortest);
+
+  const displayList = sortType.map((i, index) => (
     <div
-      className="p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-1/2 flex flex-col"
+      className="p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-2/3 flex flex-col lg:w-1/4 md:w-1/3"
       key={index}>
       <div className="flex justify-between w-full">
         <p
           className="cursor-pointer hover:text-2xl"
-          onClick={() => handleRideClick(clickedParkId, i.name)}>
+          onClick={() => handleRideClick(clickedParkId, i.id)}>
           {i.name}
         </p>
         {rideIdArray.includes(i.id) ? (
@@ -199,8 +221,29 @@ export function FetchRides() {
   ));
 
   return (
-    <div className="flex flex-col content-center flex-wrap">
-      {ridesListLongest}
+    <div>
+      <div className="dropdown dropdown-bottom w-full flex justify-center">
+        <div
+          tabIndex={0}
+          role="button"
+          className="btn btn-sm bg-secondary text-black font-1 hover:bg-white">
+          Sort By:
+        </div>
+        <ul
+          tabIndex={0}
+          className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-52 ">
+          <li className="text-black font-1 hover:bg-white">
+            <a onClick={() => setView('name')}>Name</a>
+          </li>
+          <li className="text-black font-1 hover:bg-white">
+            <a onClick={() => setView('longest')}>Longest Wait Time</a>
+          </li>
+          <li className="text-black font-1 hover:bg-white">
+            <a onClick={() => setView('shortest')}>Shortest Wait Time</a>
+          </li>
+        </ul>
+      </div>
+      <div className="flex flex-wrap justify-center pt-6">{displayList}</div>
     </div>
   );
 }

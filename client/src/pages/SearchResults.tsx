@@ -54,7 +54,7 @@ export function SearchResults() {
 
   if (isLoading)
     return (
-      <div className="bg-white h-screen">
+      <div className="bg-white h-screen pt-[68px]">
         <h1 className="text-black font-2 text-3xl py-5 text-center underline">
           Search Result:
         </h1>
@@ -65,7 +65,7 @@ export function SearchResults() {
     );
 
   return (
-    <div className="bg-white h-screen">
+    <div className="bg-white h-screen pt-[68px]">
       <h1 className="text-black font-2 text-3xl py-5 text-center underline">
         Search Result:
       </h1>

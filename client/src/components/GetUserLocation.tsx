@@ -51,7 +51,7 @@ export function GetUserLocation({ onObtainedLocation }: GetUserLocationProps) {
       <div className="flex justify-center py-3">
         <button
           type="button"
-          className="btn btn-sm text-white"
+          className="btn btn-sm text-white font-1 bg-primary"
           onClick={handleLocationClick}>
           {location ? 'Update my location' : 'Get my Location'}
         </button>

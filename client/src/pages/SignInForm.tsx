@@ -1,12 +1,9 @@
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Auth } from '../lib/api';
+import { useUser } from '../components/useUser';
 
-type SignInFormProps = {
-  onSignIn: (auth: Auth) => void;
-};
-
-export function SignInForm({ onSignIn }: SignInFormProps) {
+export function SignInForm() {
+  const { handleSignIn } = useUser();
   const navigate = useNavigate();
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,7 +26,7 @@ export function SignInForm({ onSignIn }: SignInFormProps) {
       const { user, token } = await res.json();
       sessionStorage.setItem('token', token);
       if (!user || !token) throw new Error('invalid user');
-      onSignIn({ user, token });
+      handleSignIn({ user, token });
       navigate('/logged-in');
     } catch (err) {
       alert(`Error signing-in user: ${err}`);
@@ -37,7 +34,7 @@ export function SignInForm({ onSignIn }: SignInFormProps) {
   }
 
   return (
-    <div className="bg-secondary flex flex-col content-center">
+    <div className="bg-secondary flex flex-col content-center pt-[68px]">
       <p className="text-center text-black font-2 items-center flex justify-center py-12 text-2xl">
         Let's get your adventure started!
       </p>

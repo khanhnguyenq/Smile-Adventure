@@ -92,6 +92,8 @@ export default function App() {
     user,
     token,
     favoriteRides,
+    handleSignIn,
+    handleSignOut,
     removeAttraction,
     addAttraction,
   };
@@ -99,13 +101,10 @@ export default function App() {
   return (
     <UserProvider value={contextValue}>
       <Routes>
-        <Route path="/" element={<NavBar onSignOut={handleSignOut} />}>
+        <Route path="/" element={<NavBar />}>
           <Route index element={<LandingPage />} />
           <Route path="/sign-up" element={<SignUpForm />} />
-          <Route
-            path="/sign-in"
-            element={<SignInForm onSignIn={handleSignIn} />}
-          />
+          <Route path="/sign-in" element={<SignInForm />} />
           <Route path="/favorite" element={<FavoriteRides />} />
           <Route path="/logged-in" element={<LoggedIn />} />
           <Route path="/search" element={<SearchResults />} />

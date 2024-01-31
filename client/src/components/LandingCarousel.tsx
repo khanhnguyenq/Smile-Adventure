@@ -34,7 +34,7 @@ type ImageCarouselProps = {
 function ImageCarousel({ images, currentImage }: ImageCarouselProps) {
   return (
     <div>
-      <div className="w-full h-60 md:h-96">
+      <div className="w-full h-60 sm:h-72 md:h-96 lg:h-[30rem]">
         <img
           className="w-full h-full"
           src={images[currentImage].src}

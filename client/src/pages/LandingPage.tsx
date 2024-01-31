@@ -1,6 +1,5 @@
 import { LandingCarousel } from '../components/LandingCarousel';
 import { Link } from 'react-router-dom';
-import { RollerCoaster } from '../components/RollerCoaster';
 import { useUser } from '../components/useUser';
 
 const images = [
@@ -24,13 +23,13 @@ const images = [
 export function LandingPage() {
   const { user } = useUser();
   return (
-    <div className="container min-h-screen">
+    <div className="min-h-screen pt-[68px]">
       <LandingCarousel images={images} />
       <div className="flex flex-col bg-secondary">
-        <p className="text-center text-black font-2 items-center flex justify-center py-12 text-2xl">
+        <p className="text-center text-black font-2 items-center flex justify-center p-12 text-2xl">
           Smile and Soar: Thrill Awaits, No Lines in your Way!
         </p>
-        <p className="text-center text-black font-2 items-center flex justify-center py-12 bg-primary text-xl">
+        <p className="text-center text-black font-2 items-center flex justify-center p-12 bg-primary text-xl">
           Find Wait Times for your favorite rides!
         </p>
         {user ? (
@@ -50,9 +49,7 @@ export function LandingPage() {
             </Link>
           </div>
         )}
-        <div className="flex justify-center items-end pt-20">
-          <RollerCoaster />
-        </div>
+        <div className="flex justify-center items-end pt-20"></div>
       </div>
     </div>
   );
