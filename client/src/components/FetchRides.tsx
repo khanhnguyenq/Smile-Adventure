@@ -6,7 +6,7 @@ import {
   removeFromFavorite,
 } from '../data';
 import { FavoriteButton } from './FavoriteButton';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useUser } from './useUser';
 
 export type ForecastDetails = {
@@ -46,6 +46,7 @@ export function FetchRides() {
   const [isLoading, setIsLoading] = useState(true);
   const [params] = useSearchParams();
   const { user, favoriteRides, removeAttraction, addAttraction } = useUser();
+  const navigate = useNavigate();
   const clickedParkId = params.get('id');
 
   useEffect(() => {
@@ -149,6 +150,10 @@ export function FetchRides() {
     }
   }
 
+  function handleRideClick(parkId, rideId) {
+    navigate(`/ride/${parkId}/${rideId}`);
+  }
+
   const sortLongest = openRides.sort(
     (a, b) => b.queue.STANDBY.waitTime - a.queue.STANDBY.waitTime
   );
@@ -160,10 +165,14 @@ export function FetchRides() {
 
   const ridesListLongest = sortLongest.map((i, index) => (
     <div
-      className="p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-1/2"
+      className="p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-1/2 flex flex-col"
       key={index}>
-      <div className="flex justify-between">
-        <p>{i.name}</p>
+      <div className="flex justify-between w-full">
+        <p
+          className="cursor-pointer hover:text-2xl"
+          onClick={() => handleRideClick(clickedParkId, i.name)}>
+          {i.name}
+        </p>
         {rideIdArray.includes(i.id) ? (
           <FavoriteButton
             favorite="Yes"

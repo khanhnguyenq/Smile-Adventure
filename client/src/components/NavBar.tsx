@@ -14,7 +14,7 @@ export function NavBar({ onSignOut }: NavBarProps) {
         <div className="navbar-start">
           <div className="drawer">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content">
+            <div className="drawer-content w-5 cursor-pointer">
               <label htmlFor="my-drawer" className="text-black drawer-button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -47,6 +47,9 @@ export function NavBar({ onSignOut }: NavBarProps) {
                 </li>
                 <li>
                   <Link to="/favorite">Favorite Rides</Link>
+                </li>
+                <li>
+                  <Link to="/all-parks">All Available Parks</Link>
                 </li>
               </ul>
             </div>

@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export function SearchResults() {
   const [parkList, setParkList] = useState<ParkLocation[]>();
+  const [error, setError] = useState<unknown>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export function SearchResults() {
         const result = await fetchParks();
         setParkList(result);
       } catch (err) {
-        console.log(err);
+        setError(err);
       } finally {
         setIsLoading(false);
       }
@@ -43,6 +44,13 @@ export function SearchResults() {
       {i.parkName}
     </button>
   ));
+
+  if (error)
+    return (
+      <div>
+        Error: {error instanceof Error ? error.message : 'Unknown Error'}
+      </div>
+    );
 
   if (isLoading)
     return (

@@ -50,15 +50,6 @@ export function LandingPage() {
             </Link>
           </div>
         )}
-        {/* <div className="text-center items-center flex justify-center py-12">
-          <Link to="/sign-in" className="btn btn-ghost text-black text-lg">
-            Sign-In
-          </Link>
-          <span className="text-black">/</span>
-          <Link to="/sign-up" className="btn btn-ghost text-black text-lg">
-            Sign-Up
-          </Link>
-        </div> */}
         <div className="flex justify-center items-end pt-20">
           <RollerCoaster />
         </div>

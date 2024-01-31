@@ -13,6 +13,8 @@ import { SearchResults } from './pages/SearchResults';
 import { ClickedPark } from './pages/ClickedPark';
 import { FavoriteRideInfo, FavoriteRides } from './pages/FavoriteRides';
 import { fetchAllFavoriteRides } from './data';
+import { AllParks } from './pages/AllParks';
+import { SelectedRide } from './pages/SelectedRide';
 
 export const tokenKey = 'user';
 
@@ -108,6 +110,8 @@ export default function App() {
           <Route path="/logged-in" element={<LoggedIn />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/park" element={<ClickedPark />} />
+          <Route path="/ride/:parkId/:rideId" element={<SelectedRide />} />
+          <Route path="/all-parks" element={<AllParks />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
