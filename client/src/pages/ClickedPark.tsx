@@ -76,13 +76,14 @@ export function ClickedPark() {
     closingTime = dataFormat.slice(0, 5);
   }
 
-  const timeAtPark = moment()
-    .tz(`${parkInformation?.timezone}`)
-    .format('HH:mm z');
-
-  const dateAtPark = moment()
-    .tz(`${parkInformation?.timezone}`)
-    .format('YYYY-MM-DD');
+  let timeAtPark;
+  let dateAtPark;
+  if (parkInformation) {
+    timeAtPark = moment().tz(`${parkInformation.timezone}`).format('HH:mm z');
+    dateAtPark = moment()
+      .tz(`${parkInformation?.timezone}`)
+      .format('YYYY-MM-DD');
+  }
 
   if (isLoading)
     return (
