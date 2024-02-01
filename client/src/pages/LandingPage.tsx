@@ -6,7 +6,7 @@ const images = [
   {
     src: 'images/1.jpg',
     alt: 'checking',
-    caption: 'Check Wait Times',
+    caption: 'Check Wait Times!',
   },
   {
     src: 'images/2.jpg',
@@ -26,10 +26,10 @@ export function LandingPage() {
     <div className="min-h-screen pt-[63px]">
       <LandingCarousel images={images} />
       <div className="flex flex-col bg-secondary">
-        <p className="text-center text-black font-2 items-center flex justify-center p-12 text-2xl">
+        <p className="text-center text-black font-2 p-12 text-2xl">
           Smile and Soar: Thrill Awaits, No Lines in your Way!
         </p>
-        <p className="text-center text-black font-2 items-center flex justify-center p-12 bg-primary text-xl">
+        <p className="text-center text-black font-2 p-12 bg-primary text-xl">
           Find Wait Times for your favorite rides!
         </p>
         {user ? (
