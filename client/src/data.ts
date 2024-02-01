@@ -2,6 +2,7 @@ import { LiveAPIResult, RideInfo } from './components/FetchRides';
 import { ParkLocation } from './components/ParksByDistance';
 import { Schedule, ScheduleAPIResult } from './pages/ClickedPark';
 import { FavoriteRideInfo } from './pages/FavoriteRides';
+import { ChildrenAPIResult } from './pages/SelectedRide';
 
 export async function fetchParks(): Promise<ParkLocation[]> {
   const res = await fetch('/api/parks');
@@ -18,6 +19,19 @@ export async function fetchParkInformation(
   if (!res.ok)
     throw new Error(`${res.status}: Unable to fetch operating hours`);
   const resJSON = (await res.json()) as ScheduleAPIResult;
+  result = resJSON;
+  return result;
+}
+
+export async function fetchRideLocation(
+  parkId: ParkLocation['parkId']
+): Promise<ChildrenAPIResult> {
+  let result = {} as ChildrenAPIResult;
+  const res = await fetch(
+    `https://api.themeparks.wiki/v1/entity/${parkId}/children`
+  );
+  if (!res.ok) throw new Error(`${res.status}: Unable to fetch park children`);
+  const resJSON = (await res.json()) as ChildrenAPIResult;
   result = resJSON;
   return result;
 }
@@ -66,7 +80,7 @@ export async function fetchAllFavoriteRides(): Promise<FavoriteRideInfo[]> {
   const req = {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   };
   const res = await fetch('/api/favorite', req);
@@ -91,7 +105,7 @@ export async function removeFromFavorite(favoriteRideEntry) {
   const req = {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   };
   const res = await fetch(`/api/heart/${favoriteRideEntry}`, req);
