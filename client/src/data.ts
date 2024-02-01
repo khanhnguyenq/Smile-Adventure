@@ -39,12 +39,12 @@ export async function fetchRideLocation(
 export async function fetchParkHours(
   parkId: ParkLocation['parkId']
 ): Promise<Schedule> {
-  const date = new Date();
-  const day = date.getDate();
-  const month = ('0' + (date.getMonth() + 1)).slice(-2);
-  const year = date.getFullYear();
-  const currentDate = `${year}-${month}-${day}`;
-  const nextDate = `${year}-${month}-${day + 1}`;
+  // const date = new Date();
+  // const day = date.getDate();
+  // const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  // const year = date.getFullYear();
+  // const currentDate = `${year}-${month}-${day}`;
+  // // const nextDate = `${year}-${month}-${day + 1}`;
   let result = {} as Schedule;
   const res = await fetch(
     `https://api.themeparks.wiki/v1/entity/${parkId}/schedule`
@@ -52,15 +52,13 @@ export async function fetchParkHours(
   if (!res.ok)
     throw new Error(`${res.status}: Unable to fetch operating hours`);
   const resJSON = (await res.json()) as ScheduleAPIResult;
+  const operatingArray: Schedule[] = [];
   for (let i = 0; i < resJSON.schedule.length; i++) {
-    if (
-      (resJSON.schedule[i].date === currentDate ||
-        resJSON.schedule[i].date === nextDate) &&
-      resJSON.schedule[i].type === 'OPERATING'
-    ) {
-      result = resJSON.schedule[i];
+    if (resJSON.schedule[i].type === 'OPERATING') {
+      operatingArray.push(resJSON.schedule[i]);
     }
   }
+  result = operatingArray[0];
   return result;
 }
 

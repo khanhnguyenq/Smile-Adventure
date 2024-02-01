@@ -45,7 +45,7 @@ export function ClickedPark() {
       }
     }
     getParkInformation();
-  }, []);
+  }, [clickedParkId]);
 
   useEffect(() => {
     async function getParkOperatingHours() {
@@ -59,7 +59,7 @@ export function ClickedPark() {
       }
     }
     getParkOperatingHours();
-  }, []);
+  }, [clickedParkId]);
 
   let openingTime;
   let closingTime;
@@ -78,7 +78,7 @@ export function ClickedPark() {
 
   const timeAtPark = moment()
     .tz(`${parkInformation?.timezone}`)
-    .format('HH:mm');
+    .format('HH:mm z');
 
   const dateAtPark = moment()
     .tz(`${parkInformation?.timezone}`)
@@ -86,7 +86,7 @@ export function ClickedPark() {
 
   if (isLoading)
     return (
-      <div className="bg-secondary h-screen pt-[68px]">
+      <div className="bg-secondary h-screen pt-[67px]">
         <p className="flex justify-center flex-col py-5 font-1 text-black text-center text-xl">
           Loading Information!
         </p>
@@ -101,12 +101,13 @@ export function ClickedPark() {
     );
 
   return (
-    <div className="bg-secondary pt-[68px]">
+    <div className="bg-secondary pt-[67px]">
       <div className="text-center text-black items-center flex flex-col justify-center py-6">
         <p className="font-2 pt-2 text-2xl">{parkInformation?.name}</p>
         <p className="font-1 text-sm pt-1">{parkInformation?.timezone}</p>
-        <p className="font-1 text-sm pt-1">Current Time at Park:</p>
-        <p className="font-1 text-sm pt-1">{timeAtPark}</p>
+        <p className="font-1 text-sm pt-1">
+          Current Time at Park: <span>{timeAtPark}</span>
+        </p>
         <p className="font-1 py-1 text-lg">{`Today's Date (At Park): ${dateAtPark}`}</p>
         <p className="font-1 py-1 text-lg">
           {`Operating Hours: ${openingTime} - ${closingTime}`}

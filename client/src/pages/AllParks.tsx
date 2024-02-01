@@ -40,7 +40,7 @@ export function AllParks() {
   const list = parkList?.map((i, index) => (
     <button
       onClick={() => handleParkClick(i.parkId)}
-      className="p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-2/3 flex flex-col lg:w-1/4 md:w-1/3"
+      className="bg-secondary shadow-xl p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-2/3 flex flex-col lg:w-1/4 md:w-1/3"
       key={index}>
       {i.parkName}
     </button>
@@ -56,7 +56,7 @@ export function AllParks() {
   if (isLoading) return <div>Loading!</div>;
 
   return (
-    <div className="bg-white pt-[68px]">
+    <div className="bg-white pt-[67px]">
       <h1 className="text-black font-2 text-3xl py-5 text-center underline">
         All Parks:
       </h1>

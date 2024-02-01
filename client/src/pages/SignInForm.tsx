@@ -34,7 +34,7 @@ export function SignInForm() {
   }
 
   return (
-    <div className="bg-secondary flex flex-col content-center pt-[68px]">
+    <div className="bg-secondary flex flex-col content-center pt-[67px]">
       <p className="text-center text-black font-2 items-center flex justify-center py-12 text-2xl">
         Let's get your adventure started!
       </p>

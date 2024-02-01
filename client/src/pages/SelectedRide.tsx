@@ -47,7 +47,7 @@ export function SelectedRide() {
       }
     }
     getRidesInfo();
-  }, []);
+  }, [parkId, rideId]);
 
   useEffect(() => {
     async function getRideLocation() {
@@ -67,7 +67,7 @@ export function SelectedRide() {
       }
     }
     getRideLocation();
-  }, []);
+  }, [parkId, rideId]);
 
   if (error)
     return (
@@ -81,7 +81,7 @@ export function SelectedRide() {
   if (!rideInfo) throw new Error('Ride Information did not match');
 
   return (
-    <div className="h-screen pt-[68px] bg-secondary text-black font-1">
+    <div className="h-screen pt-[67px] bg-secondary text-black font-1">
       <p>{rideInfo.name}</p>
       <p>
         Status: {rideInfo.status[0] + rideInfo.status.slice(1).toLowerCase()}

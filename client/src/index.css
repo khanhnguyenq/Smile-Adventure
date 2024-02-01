@@ -7,9 +7,13 @@
 }
 
 .font-1 {
-  font-family: Courgette, cursive;
+  font-family: Courgette, Arial, Helvetica, sans-serif;
 }
 
 .font-2 {
-  font-family: Ananda, cursive;
+  font-family: Ananda, Arial, Helvetica, sans-serif;
+}
+
+.font-3 {
+  font-family: helvetica, arial, sans-serif;
 }

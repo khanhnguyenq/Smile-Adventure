@@ -23,7 +23,7 @@ const images = [
 export function LandingPage() {
   const { user } = useUser();
   return (
-    <div className="min-h-screen pt-[68px]">
+    <div className="min-h-screen pt-[63px]">
       <LandingCarousel images={images} />
       <div className="flex flex-col bg-secondary">
         <p className="text-center text-black font-2 items-center flex justify-center p-12 text-2xl">

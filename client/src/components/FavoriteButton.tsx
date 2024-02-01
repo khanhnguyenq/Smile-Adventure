@@ -9,7 +9,7 @@ export function FavoriteButton({ onSelect, favorite }: FavoriteButtonProps) {
       onClick={() => {
         onSelect();
       }}
-      className="btn btn-ghost">
+      className="btn btn-ghost items-start">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-6 w-6"
