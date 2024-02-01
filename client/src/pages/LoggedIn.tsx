@@ -32,7 +32,7 @@ export function LoggedIn() {
   }
 
   return (
-    <div className="h-screen bg-secondary flex flex-col content-center pt-[68px]">
+    <div className="h-screen bg-secondary flex flex-col content-center pt-[67px]">
       <p className="text-black font-2 text-2xl py-5 text-center underline">
         Welcome back, {displayName}!
       </p>

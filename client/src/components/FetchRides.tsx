@@ -45,7 +45,7 @@ export function FetchRides() {
   const [error, setError] = useState<unknown>();
   const [isLoading, setIsLoading] = useState(true);
   const [params] = useSearchParams();
-  const [view, setView] = useState<string>();
+  const [view, setView] = useState<string>('Name');
   const { user, favoriteRides, removeAttraction, addAttraction } = useUser();
   const navigate = useNavigate();
   const clickedParkId = params.get('id');
@@ -62,7 +62,7 @@ export function FetchRides() {
       }
     }
     getRidesInfo();
-  }, []);
+  }, [clickedParkId]);
 
   useEffect(() => {
     async function getParkInfo() {
@@ -76,7 +76,7 @@ export function FetchRides() {
       }
     }
     getParkInfo();
-  }, []);
+  }, [clickedParkId]);
 
   if (error)
     return (
@@ -132,18 +132,18 @@ export function FetchRides() {
       // if deleteId exist:
       if (deleteId) {
         // remove the item from the userAttractions database
-        // function is defined in data.ts line 88
+        // function is defined in data.ts line 101
         await removeFromFavorite(deleteId);
         // execute removeAttraction to update the favoriteRides state
         // function is defined in App.tsx line 65 and made available through useContext
         removeAttraction(deleteId);
         // if deleteId does not exist
       } else {
-        // add the created object on line 113 to userAttraction table
+        // add the created object on line 124 to userAttraction table
         const updatedFavorite = await insertToFavorite(favoriteRideData);
         // execute addAttraction which updates the favoriteRides by
         // spreading the original array and adding the return value from above function
-        // function is defined in App.tsx line 72
+        // function is defined in App.tsx line 89
         addAttraction(updatedFavorite);
       }
     } catch (err) {
@@ -179,19 +179,19 @@ export function FetchRides() {
   }
 
   let sortType;
-  view === 'name'
+  view === 'Name'
     ? (sortType = sortName)
-    : view === 'longest'
+    : view === 'Longest'
     ? (sortType = sortLongest)
     : (sortType = sortShortest);
 
   const displayList = sortType.map((i, index) => (
     <div
-      className="p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-2/3 flex flex-col lg:w-1/4 md:w-1/3"
+      className=" bg-white shadow-md p-4 text-black m-2 rounded-lg w-2/3 flex flex-col lg:w-1/4 md:w-1/3 justify-between"
       key={index}>
       <div className="flex justify-between w-full">
         <p
-          className="cursor-pointer hover:text-2xl"
+          className="cursor-pointer hover:text-2xl font-1 pb-3"
           onClick={() => handleRideClick(clickedParkId, i.id)}>
           {i.name}
         </p>
@@ -211,14 +211,91 @@ export function FetchRides() {
           />
         )}
       </div>
-      <p>Status: Operating</p>
-      <p>
-        {`Wait time: ${
-          i.queue.STANDBY.waitTime === null ? '0' : i.queue.STANDBY.waitTime
-        } Minutes`}
-      </p>
+      <div className="flex justify-between">
+        <p className="font-serif text-xs">
+          Status:{' '}
+          <span className="rounded-md p-1 bg-green-200 text-green-600 border border-green-600 mt-1">
+            Operating
+          </span>
+        </p>
+        <p className="font-serif text-xs">
+          Smile Time:{' '}
+          <span
+            className="font-bold text-sm"
+            style={{
+              color:
+                i.queue.STANDBY.waitTime >= 60
+                  ? 'red'
+                  : i.queue.STANDBY.waitTime >= 30
+                  ? 'orange'
+                  : 'green',
+            }}>
+            {i.queue.STANDBY.waitTime === null ? '0' : i.queue.STANDBY.waitTime}
+          </span>{' '}
+          Minutes
+        </p>
+      </div>
     </div>
   ));
+
+  // const displayList = openAttractionsArray.map((i, index) => (
+  //   <div
+  //     className=" bg-white shadow-md p-4 text-black m-2 rounded-lg w-2/3 flex flex-col lg:w-1/4 md:w-1/3"
+  //     key={index}>
+  //     <div className="flex justify-between w-full">
+  //       <p
+  //         className="cursor-pointer hover:text-2xl font-1"
+  //         onClick={() => handleRideClick(clickedParkId, i.id)}>
+  //         {i.name}
+  //       </p>
+  //       {rideIdArray.includes(i.id) ? (
+  //         <FavoriteButton
+  //           favorite="Yes"
+  //           onSelect={() => {
+  //             handleSelect(i.id, i.name);
+  //           }}
+  //         />
+  //       ) : (
+  //         <FavoriteButton
+  //           favorite="No"
+  //           onSelect={() => {
+  //             handleSelect(i.id, i.name);
+  //           }}
+  //         />
+  //       )}
+  //     </div>
+  //     <div className="flex justify-between">
+  //       <p className="font-serif text-xs">
+  //         Status:{' '}
+  //         {i.status === 'OPERATING' ? (
+  //           <span className="rounded-md p-1 bg-green-200 text-green-600">
+  //             Operating
+  //           </span>
+  //         ) : (
+  //           <span className="rounded-md p-1 bg-red-200 text-red-600">
+  //             Closed
+  //           </span>
+  //         )}
+  //         {/* <span className="rounded-md p-1 bg-green-200 text-green-600">
+  //           Operating
+  //         </span> */}
+  //       </p>
+  //       <p className="font-serif text-xs">
+  //         Smile Time:{' '}
+  //         {i.status === 'OPERATING'
+  //           ? i.queue.STANDBY.waitTime === null
+  //             ? '0'
+  //             : i.queue.STANDBY.waitTime
+  //           : '0'}
+  //       </p>
+  //       {/* <p className="font-serif text-xs">
+  //         Smile Time:{' '}
+  //         {i.queue.STANDBY.waitTime === null ? '0' : i.queue.STANDBY.waitTime}{' '}
+  //         Minutes
+  //       </p> */}
+  //     </div>
+  //   </div>
+  // ));
 
   return (
     <div>
@@ -226,20 +303,18 @@ export function FetchRides() {
         <div
           tabIndex={0}
           role="button"
-          className="btn btn-sm bg-secondary text-black font-1 hover:bg-white">
-          Sort By:
-        </div>
+          className="btn btn-sm bg-secondary text-black font-1 hover:bg-white">{`Sort by: ${view}`}</div>
         <ul
           tabIndex={0}
           className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-52 ">
           <li className="text-black font-1 hover:bg-white">
-            <a onClick={() => setView('name')}>Name</a>
+            <a onClick={() => setView('Name')}>Name</a>
           </li>
           <li className="text-black font-1 hover:bg-white">
-            <a onClick={() => setView('longest')}>Longest Wait Time</a>
+            <a onClick={() => setView('Longest')}>Longest Wait Time</a>
           </li>
           <li className="text-black font-1 hover:bg-white">
-            <a onClick={() => setView('shortest')}>Shortest Wait Time</a>
+            <a onClick={() => setView('Shortest')}>Shortest Wait Time</a>
           </li>
         </ul>
       </div>

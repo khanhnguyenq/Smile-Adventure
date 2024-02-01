@@ -54,7 +54,7 @@ export function FavoriteRides() {
   ));
 
   return (
-    <div className="flex flex-col content-center flex-wrap bg-white h-screen pt-[68px]">
+    <div className="flex flex-col content-center flex-wrap bg-white h-screen pt-[67px]">
       <ul>{list}</ul>
     </div>
   );
