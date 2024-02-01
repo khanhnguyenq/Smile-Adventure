@@ -39,12 +39,6 @@ export async function fetchRideLocation(
 export async function fetchParkHours(
   parkId: ParkLocation['parkId']
 ): Promise<Schedule> {
-  // const date = new Date();
-  // const day = date.getDate();
-  // const month = ('0' + (date.getMonth() + 1)).slice(-2);
-  // const year = date.getFullYear();
-  // const currentDate = `${year}-${month}-${day}`;
-  // // const nextDate = `${year}-${month}-${day + 1}`;
   let result = {} as Schedule;
   const res = await fetch(
     `https://api.themeparks.wiki/v1/entity/${parkId}/schedule`

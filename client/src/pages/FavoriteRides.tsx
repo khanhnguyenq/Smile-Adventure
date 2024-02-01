@@ -45,17 +45,22 @@ export function FavoriteRides() {
   if (isLoading) return <div>Loading!</div>;
 
   const list = favoriteRides.map((i, index) => (
-    <li
+    <button
       key={index}
       onClick={() => handleRideClick(i.parkId, i.attractionId)}
-      className="text-black font-1">
+      className="text-center bg-secondary shadow-xl p-4 font-1 text-black border-black border-solid border-2 m-2 rounded w-2/3 flex flex-col lg:w-1/4 md:w-1/3">
       {i.parkName} - {i.rideName}
-    </li>
+    </button>
   ));
 
   return (
-    <div className="flex flex-col content-center flex-wrap bg-white h-screen pt-[67px]">
-      <ul>{list}</ul>
+    <div className="bg-white pt-[67px]">
+      <h1 className="text-black font-2 text-3xl py-5 text-center underline">
+        Saved Rides:
+      </h1>
+      <div className="flex flex-col content-center flex-wrap bg-white h-screen">
+        {list}
+      </div>
     </div>
   );
 }

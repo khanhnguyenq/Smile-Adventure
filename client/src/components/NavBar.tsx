@@ -54,11 +54,18 @@ export function NavBar() {
         <Logo />
         <div className="navbar-end">
           {user && (
-            <button
-              onClick={handleSignOut}
-              className="btn btn-ghost text-black">
-              Sign-Out
-            </button>
+            <>
+              <div>
+                <Link to="/logged-in" className="btn btn-ghost text-black">
+                  Search Parks
+                </Link>
+              </div>
+              <button
+                onClick={handleSignOut}
+                className="btn btn-ghost text-black">
+                Sign-Out
+              </button>
+            </>
           )}
           {user === undefined && (
             <>
