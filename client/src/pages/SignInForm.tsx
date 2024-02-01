@@ -24,7 +24,7 @@ export function SignInForm() {
         throw new Error(`fetch Error ${res.status}`);
       }
       const { user, token } = await res.json();
-      sessionStorage.setItem('token', token);
+      localStorage.setItem('token', token);
       if (!user || !token) throw new Error('invalid user');
       handleSignIn({ user, token });
       navigate('/logged-in');
