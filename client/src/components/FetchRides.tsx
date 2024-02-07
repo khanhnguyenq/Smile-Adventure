@@ -107,7 +107,6 @@ export function FetchRides() {
 
   async function handleSelect(attractionId, attractionName) {
     try {
-      // create favorite ride object based on provided data
       const userId = user?.userId;
       const parkId = parkInfo?.id;
       const parkName = parkInfo?.name;
@@ -119,31 +118,18 @@ export function FetchRides() {
         parkName,
         rideName,
       };
-      // loop through favorite rides and find any items that matches the conditionals
-      // favorite ride must matches all three conditionals to be consider unique
       const foundItem = favoriteRides.find(
         (item) =>
           item.userId === userId &&
           item.attractionId === attractionId &&
           item.parkId === parkId
       );
-      // get the entry id from the matched item if there is no matched item, deleteId is undefined
       const deleteId = foundItem?.entryId;
-      // if deleteId exist:
       if (deleteId) {
-        // remove the item from the userAttractions database
-        // function is defined in data.ts line 101
         await removeFromFavorite(deleteId);
-        // execute removeAttraction to update the favoriteRides state
-        // function is defined in App.tsx line 65 and made available through useContext
         removeAttraction(deleteId);
-        // if deleteId does not exist
       } else {
-        // add the created object on line 124 to userAttraction table
         const updatedFavorite = await insertToFavorite(favoriteRideData);
-        // execute addAttraction which updates the favoriteRides by
-        // spreading the original array and adding the return value from above function
-        // function is defined in App.tsx line 89
         addAttraction(updatedFavorite);
       }
     } catch (err) {
@@ -211,11 +197,14 @@ export function FetchRides() {
           />
         )}
       </div>
-      <div className="flex justify-between">
-        <p className="font-serif text-xs">
+      <div className="flex justify-between content-end">
+        <p className="font-serif text-xs flex pt-[3px]">
           Status:{' '}
-          <span className="rounded-md p-1 bg-green-200 text-green-600 border border-green-600 mt-1">
+          <span className="rounded-md bg-green-200 text-green-600 border border-green-600 mt-1 hidden sm:contents md:contents lg:contents">
             Operating
+          </span>
+          <span className="rounded-full h-4 w-4 bg-green-200 flex flex-wrap justify-center content-center sm:hidden md:hidden lg:hidden">
+            <span className="rounded-full bg-green-600 h-2 w-2"></span>
           </span>
         </p>
         <p className="font-serif text-xs">
@@ -232,7 +221,7 @@ export function FetchRides() {
             }}>
             {i.queue.STANDBY.waitTime === null ? '0' : i.queue.STANDBY.waitTime}
           </span>{' '}
-          Minutes
+          Mins
         </p>
       </div>
     </div>
