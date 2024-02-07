@@ -1,6 +1,6 @@
 # [Smile Adventure](https://www.smileadventure.xyz/)
 ## What is it?
-##### Smile Adeventure is a full-stack web appllication that allows users to view wait times at any theme parks that is available in ThemePark Wiki API. Users can also save theme park rides to their list for viewing at a later time. Users can also remove the ride from the favorite list if they completed the ride.
+##### Smile Adventure is a full-stack web appllication that allows users to view wait times at any theme parks that is available in ThemePark Wiki API. Users can also save theme park rides to their list for viewing at a later time. Users can also remove the ride from the favorite list if they completed the ride.
 ## Demo:
 ![Smile Adventure Demo](https://github.com/khanhnguyenq/Smile-Adventure/assets/114459075/2573f41b-bcce-4ccd-a0eb-9d59801417d0)
 
