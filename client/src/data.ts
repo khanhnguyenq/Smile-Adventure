@@ -81,7 +81,9 @@ export async function fetchAllFavoriteRides(): Promise<FavoriteRideInfo[]> {
   return resJSON;
 }
 
-export async function insertToFavorite(favoriteRideData) {
+export async function insertToFavorite(
+  favoriteRideData
+): Promise<FavoriteRideInfo> {
   const req = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -93,7 +95,9 @@ export async function insertToFavorite(favoriteRideData) {
   return resJSON;
 }
 
-export async function removeFromFavorite(favoriteRideEntry) {
+export async function removeFromFavorite(
+  favoriteRideEntry: number
+): Promise<void> {
   const req = {
     method: 'DELETE',
     headers: {
