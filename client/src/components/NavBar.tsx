@@ -1,6 +1,7 @@
 import { Link, Outlet } from 'react-router-dom';
 import { Logo } from './Logo';
 import { useUser } from './useUser';
+import { GuestBtn } from './GuestBtn';
 
 export function NavBar() {
   const { user, handleSignOut } = useUser();
@@ -8,7 +9,7 @@ export function NavBar() {
     <div>
       <div className="navbar bg-primary fixed top-0 z-50">
         <div className="navbar-start">
-          <div className="drawer">
+          <div className="drawer w-fit">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content w-5 cursor-pointer">
               <label htmlFor="my-drawer" className="text-black drawer-button">
@@ -50,6 +51,7 @@ export function NavBar() {
               </ul>
             </div>
           </div>
+          <GuestBtn />
         </div>
         <Logo />
         <div className="navbar-end">

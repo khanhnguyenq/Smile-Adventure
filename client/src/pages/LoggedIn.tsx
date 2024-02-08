@@ -10,9 +10,9 @@ export function LoggedIn() {
   const [location, setLocation] = useState<Location>();
 
   if (!user) throw new Error('Not Logged In');
-  const displayName = user.username.replace(
-    `${user.username[0]}`,
-    `${user.username[0].toUpperCase()}`
+  const displayName = user.name.replace(
+    `${user.name[0]}`,
+    `${user.name[0].toUpperCase()}`
   );
 
   function handleObtainedLocation(location: Location) {

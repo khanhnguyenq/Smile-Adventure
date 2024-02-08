@@ -73,4 +73,9 @@ insert into "parks"
     ('b08d9272-d070-4580-9fcd-375270b191a7','Thorpe Park','-0.507949','51.407605'),
     ('a4f71074-e616-4de4-9278-72fdecbdc995','LEGOLAND Windsor','-0.645908','51.463481'),
     ('0d8ea921-37b1-4a9a-b8ef-5b45afea847b','Alton Towers','-1.894724','52.993137'),
-    ('ae959d1f-9fcc-4aab-8063-71e641fa57f4','Chessington World of Adventures','-0.318867','51.346701')
+    ('ae959d1f-9fcc-4aab-8063-71e641fa57f4','Chessington World of Adventures','-0.318867','51.346701');
+
+insert into "users"
+  ("username", "hashedPassword", "name")
+  values
+    ('test', '$argon2id$v=19$m=4096,t=3,p=1$4xQnOWsGU1vquzI5tuzpEw$v0fsqkdYbgD8UmvbdcxHY99bzg4t8+SPIYA8hlnU1h4', 'Khanh');
