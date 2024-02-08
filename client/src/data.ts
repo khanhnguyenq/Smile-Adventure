@@ -107,3 +107,10 @@ export async function removeFromFavorite(
   const res = await fetch(`/api/heart/${favoriteRideEntry}`, req);
   if (!res.ok) throw new Error('Error removing ride from favorite');
 }
+
+export function getView() {
+  let viewData = localStorage.getItem('view');
+  if (!viewData) viewData = 'Name';
+  console.log('viewData', viewData);
+  return viewData;
+}

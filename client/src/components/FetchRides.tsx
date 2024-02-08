@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   fetchAllRides,
   fetchParkInformation,
+  getView,
   insertToFavorite,
   removeFromFavorite,
 } from '../data';
@@ -45,7 +46,7 @@ export function FetchRides() {
   const [error, setError] = useState<unknown>();
   const [isLoading, setIsLoading] = useState(true);
   const [params] = useSearchParams();
-  const [view, setView] = useState<string>('Name');
+  const [, setView] = useState<string>('Name');
   const { user, favoriteRides, removeAttraction, addAttraction } = useUser();
   const navigate = useNavigate();
   const clickedParkId = params.get('id');
@@ -165,9 +166,10 @@ export function FetchRides() {
   }
 
   let sortType;
-  view === 'Name'
+  const lastView = getView();
+  lastView === 'Name'
     ? (sortType = sortName)
-    : view === 'Longest'
+    : lastView === 'Longest'
     ? (sortType = sortLongest)
     : (sortType = sortShortest);
 
@@ -292,18 +294,36 @@ export function FetchRides() {
         <div
           tabIndex={0}
           role="button"
-          className="btn btn-sm bg-secondary text-black font-1 hover:bg-white">{`Sort by: ${view}`}</div>
+          className="btn btn-sm bg-secondary text-black font-1 hover:bg-white">{`Sort by: ${lastView}`}</div>
         <ul
           tabIndex={0}
           className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-52 ">
           <li className="text-black font-1 hover:bg-white">
-            <a onClick={() => setView('Name')}>Name</a>
+            <a
+              onClick={() => {
+                setView('Name');
+                localStorage.setItem('view', 'Name');
+              }}>
+              Name
+            </a>
           </li>
           <li className="text-black font-1 hover:bg-white">
-            <a onClick={() => setView('Longest')}>Longest Wait Time</a>
+            <a
+              onClick={() => {
+                setView('Longest');
+                localStorage.setItem('view', 'Longest');
+              }}>
+              Longest Wait Time
+            </a>
           </li>
           <li className="text-black font-1 hover:bg-white">
-            <a onClick={() => setView('Shortest')}>Shortest Wait Time</a>
+            <a
+              onClick={() => {
+                setView('Shortest');
+                localStorage.setItem('view', 'Shortest');
+              }}>
+              Shortest Wait Time
+            </a>
           </li>
         </ul>
       </div>
