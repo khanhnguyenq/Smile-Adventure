@@ -46,6 +46,7 @@ export function SignInForm() {
           <label className="block text-black text-center font-1 text-lg">
             Username:
             <input
+              required
               type="text"
               name="username"
               className="input input-bordered w-48 h-8 max-w-xs bg-gray-200 block"
@@ -56,6 +57,7 @@ export function SignInForm() {
           <label className="block text-black text-center font-1 text-lg">
             Password:
             <input
+              required
               type="password"
               name="password"
               className="input input-bordered w-48 h-8 max-w-xs bg-gray-200 block"

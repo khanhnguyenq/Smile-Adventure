@@ -83,7 +83,7 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
     const { username, password } = req.body as Partial<Auth>;
     if (!username || !password) throw new Error('invalid login');
     const sql = `
-    SELECT "userId", "hashedPassword"
+    SELECT "userId", "hashedPassword", "name"
       FROM "users"
       WHERE "username" = $1
     `;
@@ -91,13 +91,13 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
     const result = await db.query<User>(sql, params);
     const [user] = result.rows;
     if (!user) {
-      throw new ClientError(401, 'invalid login');
+      throw new ClientError(401, 'user does not exist');
     }
-    const { userId, hashedPassword } = user;
+    const { userId, hashedPassword, name } = user;
     if (!(await argon2.verify(hashedPassword, password))) {
-      throw new ClientError(401, 'invalid login');
+      throw new ClientError(401, 'password does not match');
     }
-    const payload = { userId, username };
+    const payload = { userId, username, name };
     const token = jwt.sign(payload, hashKey);
     res.status(200).json({ token, user: payload });
   } catch (err) {
