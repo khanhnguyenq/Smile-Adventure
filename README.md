@@ -5,7 +5,7 @@
 ![Smile Adventure Demo](https://github.com/khanhnguyenq/Smile-Adventure/assets/114459075/2573f41b-bcce-4ccd-a0eb-9d59801417d0)
 
 ## How to use the site:
-  ##### 1. Click the [Smile Adventure](https://www.smileadventure.xyz/). Navigate to `Sign-In`. As of right now, please sign in using `test` as both the `username` and `password` or             create your own account!
+  ##### 1. Click the [Smile Adventure](https://www.smileadventure.xyz/). Create your own account for future use or use the `Guest Sign In` function!
   ##### 2. Once logged in, you will be directed to either type a theme park name or use the `Get Current Location` button to display the ten closest parks to you.
   ##### 3. Click on the park of your choosing, and you will see all of the currently available rides at that park with the live wait times.
   ##### 4. You can sort the rides by either the `longest wait time`, `the shortest wait time`, or by their `name`.
