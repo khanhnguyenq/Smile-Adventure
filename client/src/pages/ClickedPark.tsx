@@ -104,7 +104,7 @@ export function ClickedPark() {
 
   return (
     <div className="bg-secondary pt-[67px]">
-      <BackButton displayText="Back to Search Results" />
+      <BackButton displayText="Back to Search" />
       <div className="text-center text-black items-center flex flex-col justify-center py-6">
         <p className="font-2 pt-2 text-2xl">{parkInformation?.name}</p>
         <p className="font-1 text-sm pt-1">{parkInformation?.timezone}</p>
