@@ -66,7 +66,7 @@ export default function App() {
       }
     }
     getKey();
-  });
+  }, []);
 
   function handleSignIn(auth: Auth) {
     localStorage.setItem(tokenKey, JSON.stringify(auth));
