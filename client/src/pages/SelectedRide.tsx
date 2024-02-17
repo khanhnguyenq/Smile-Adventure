@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchAllRides, fetchRideLocation } from '../data';
 import { RideInfo } from '../components/FetchRides';
+import { useUser } from '../components/useUser';
+import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
+import { BackButton } from '../components/BackBtn';
 
 export type Location = {
   longitude: number;
@@ -23,11 +26,21 @@ export type ChildrenAPIResult = {
 };
 
 export function SelectedRide() {
+  const placeholder = {
+    id: '',
+    name: '',
+    entityType: '',
+    location: {
+      longitude: 0,
+      latitude: 0,
+    },
+  };
   const { parkId, rideId } = useParams();
   const [rideInfo, setRideInfo] = useState<RideInfo>();
-  const [rideLocation, setRideLocation] = useState<Children>();
+  const [rideLocation, setRideLocation] = useState<Children>(placeholder);
   const [error, setError] = useState<unknown>();
   const [isLoading, setIsLoading] = useState(true);
+  const { apiKey } = useUser();
 
   useEffect(() => {
     async function getRidesInfo() {
@@ -80,18 +93,33 @@ export function SelectedRide() {
 
   if (!rideInfo) throw new Error('Ride Information did not match');
 
+  const position = {
+    lat: rideLocation.location.latitude,
+    lng: rideLocation.location.longitude,
+  };
+
   return (
-    <div className="h-screen pt-[67px] bg-secondary text-black font-1">
-      <p>{rideInfo.name}</p>
-      <p>
-        Status: {rideInfo.status[0] + rideInfo.status.slice(1).toLowerCase()}
-      </p>
-      <p>
-        {rideInfo.status === 'OPERATING' ??
-          `Wait Time: ${rideInfo.queue.STANDBY.waitTime} minutes`}
-      </p>
-      <p>{rideLocation?.location.latitude}</p>
-      <p>{rideLocation?.location.longitude}</p>
-    </div>
+    <APIProvider apiKey={apiKey}>
+      <div className="h-screen pt-[67px] bg-secondary text-black font-1 text-center">
+        <BackButton displayText="Back to Rides" />
+        <p className="pt-10">{rideInfo.name}</p>
+        <p className="pt-2">
+          Status: {rideInfo.status[0] + rideInfo.status.slice(1).toLowerCase()}
+        </p>
+        <p className="py-2">
+          Wait Time: {rideInfo.queue.STANDBY.waitTime} minutes
+        </p>
+        <div className="h-80 w-10/12 m-auto">
+          <Map
+            center={position}
+            defaultZoom={17}
+            fullscreenControl={false}
+            mapTypeControl={false}
+            streetViewControl={false}>
+            <Marker position={position} />
+          </Map>
+        </div>
+      </div>
+    </APIProvider>
   );
 }

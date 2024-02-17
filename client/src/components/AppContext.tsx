@@ -5,6 +5,7 @@ import { FavoriteRideInfo } from '../pages/FavoriteRides';
 export type AppContextValues = {
   user: User | undefined;
   token: string | undefined;
+  apiKey: string;
   favoriteRides: FavoriteRideInfo[] | [];
   handleSignIn: (auth: Auth) => void;
   handleSignOut: () => void;
@@ -15,6 +16,7 @@ export type AppContextValues = {
 export const AppContext = createContext<AppContextValues>({
   user: undefined,
   token: undefined,
+  apiKey: '',
   favoriteRides: [],
   handleSignIn: () => undefined,
   handleSignOut: () => undefined,

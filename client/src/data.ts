@@ -111,6 +111,5 @@ export async function removeFromFavorite(
 export function getView() {
   let viewData = localStorage.getItem('view');
   if (!viewData) viewData = 'Name';
-  console.log('viewData', viewData);
   return viewData;
 }

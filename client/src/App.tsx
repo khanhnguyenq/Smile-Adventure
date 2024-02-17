@@ -26,6 +26,7 @@ export default function App() {
   const [isAuthorizing, setIsAuthorizing] = useState(true);
   const [error, setError] = useState<unknown>();
   const [isLoading, setIsLoading] = useState(true);
+  const [apiKey, setApiKey] = useState<string>('');
 
   useEffect(() => {
     const auth = localStorage.getItem(tokenKey);
@@ -52,6 +53,20 @@ export default function App() {
     setIsAuthorizing(false);
     setIsLoading(false);
   }, [token]);
+
+  useEffect(() => {
+    async function getKey() {
+      try {
+        const res = await fetch('/api/key');
+        if (!res.ok) throw new Error('Error getting api key');
+        const resJSON = await res.json();
+        setApiKey(resJSON);
+      } catch (err) {
+        setError(err);
+      }
+    }
+    getKey();
+  });
 
   function handleSignIn(auth: Auth) {
     localStorage.setItem(tokenKey, JSON.stringify(auth));
@@ -91,6 +106,7 @@ export default function App() {
   const contextValue = {
     user,
     token,
+    apiKey,
     favoriteRides,
     handleSignIn,
     handleSignOut,
