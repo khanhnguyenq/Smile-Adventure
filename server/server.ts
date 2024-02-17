@@ -181,7 +181,11 @@ app.get('/api/favorite', authMiddleware, async (req, res, next) => {
 });
 
 app.get('/api/key', async (req, res, next) => {
-  res.json(process.env.GOOGLE_API_KEY);
+  try {
+    res.json(process.env.GOOGLE_API_KEY);
+  } catch (err) {
+    next(err);
+  }
 });
 
 /*
