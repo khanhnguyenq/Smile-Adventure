@@ -10,7 +10,6 @@ export function GuestBtn() {
         username: 'test',
         password: 'test',
       };
-      console.log('userData', userData);
       const req = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

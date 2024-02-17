@@ -180,6 +180,10 @@ app.get('/api/favorite', authMiddleware, async (req, res, next) => {
   }
 });
 
+app.get('/api/key', async (req, res, next) => {
+  res.json(process.env.GOOGLE_API_KEY);
+});
+
 /*
  * Middleware that handles paths that aren't handled by static middleware
  * or API route handlers.
