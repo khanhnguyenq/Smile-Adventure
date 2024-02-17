@@ -61,6 +61,7 @@ export default function App() {
         if (!res.ok) throw new Error('Error getting api key');
         const resJSON = await res.json();
         setApiKey(resJSON);
+        console.log('api', resJSON);
       } catch (err) {
         setError(err);
       }
