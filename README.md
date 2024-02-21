@@ -16,3 +16,4 @@
 #### Front End: React, TailwindCSS, and DaisyUI
 #### Back End: Node.JS and Express
 #### Database: PostgreSQL
+#### APIs: ThemePark Wiki and Google API
